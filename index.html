@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>統合占い｜8</title>
+
+<style>
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+  background:#0f1220;color:#fff;margin:0;padding:14px
+}
+h1{text-align:center;margin-bottom:10px}
+label{display:block;margin-top:10px}
+input,select,button{
+  width:100%;padding:10px;margin-top:6px;font-size:16px;
+  border-radius:8px;border:none
+}
+input,select{background:#0f1220;color:#fff;border:1px solid #333}
+button{margin-top:16px;background:#6c7cff;color:#fff;font-size:18px}
+
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:16px 0}
+.tab{
+  padding:8px 14px;border-radius:20px;background:#24285a;
+  white-space:nowrap;font-size:14px
+}
+.tab.active{background:#6c7cff}
+
+.section{
+  display:none;background:#1b1f3a;padding:14px;border-radius:12px
+}
+.section.active{display:block}
+.section h2{
+  font-size:17px;border-bottom:1px solid #444;padding-bottom:6px;margin-top:0
+}
+.section h3{font-size:15px;margin:10px 0 4px}
+.section p{line-height:1.8;margin:6px 0 10px}
+.hr{height:1px;background:#2a2f66;margin:10px 0}
+</style>
+</head>
+
+<body>
+
+<h1>統合占い</h1>
+
+<label>姓<input id="sei"></label>
+<label>名<input id="mei"></label>
+<label>生年月日<input type="date" id="birth"></label>
+<label>性別
+<select id="gender">
+<option>男性</option><option>女性</option><option>その他</option>
+</select>
+</label>
+
+<button onclick="uranau()">占う</button>
+
+<div class="tabs" id="tabs" style="display:none"></div>
+
+<div id="sections">
+
+<!-- 統合 -->
+<div class="section" data-k="統合">
+<h2>統合リーディング</h2>
+<p>
+あなたは一つの占術で語りきれる存在ではありません。
+矛盾や揺らぎを含んだまま、全体を見渡す資質を持っています。
+</p>
+
+<h3>人生テーマ</h3>
+<p>
+分けないこと。決めつけないこと。
+多視点を保ったまま、現実に橋をかけていく役割です。
+</p>
+
+<h3>深層テーマ（無意識の軸）</h3>
+<p>
+「どちらかを切り捨てること」への違和感。
+統合するまで答えにしない、という姿勢が根にあります。
+</p>
+
+<h3>今のあなたへの使い方</h3>
+<p>
+急いで結論を出さなくていい。
+違和感を保留したまま動くことが、結果的に最短です。
+</p>
+</div>
+
+<!-- 四柱推命 -->
+<div class="section" data-k="四柱">
+<h2>四柱推命</h2>
+
+<h3>表の性質</h3>
+<p>
+環境に合わせて役割を引き受ける柔軟な命式。
+周囲からは「安定している人」と見られやすいでしょう。
+</p>
+
+<h3>裏の性質</h3>
+<p>
+本質は独立的で、同調よりも納得を重視します。
+</p>
+
+<div class="hr"></div>
+
+<h3>深層テーマ</h3>
+<p>
+「運命に従う／逆らう」という二択ではなく、
+角度を変えて流れに乗る感覚。
+</p>
+
+<h3>迷いやすいポイント</h3>
+<p>
+責任を引き受けすぎること。
+自分の分ではない流れまで背負いがちです。
+</p>
+
+<h3>今の使い方</h3>
+<p>
+役割を一段減らすだけで、運の巡りが軽くなります。
+</p>
+</div>
+
+<!-- 数秘 -->
+<div class="section" data-k="数秘">
+<h2>数秘術</h2>
+
+<h3>本質数の影響</h3>
+<p>
+循環・調和・統合を示す数の影響が強め。
+物事を線ではなく面で捉えます。
+</p>
+
+<div class="hr"></div>
+
+<h3>深層テーマ</h3>
+<p>
+「意味のない出来事はない」という前提。
+点と点を結ぶ衝動が無意識に働きます。
+</p>
+
+<h3>迷いやすいポイント</h3>
+<p>
+意味を探しすぎて、今を置き去りにすること。
+</p>
+
+<h3>今の使い方</h3>
+<p>
+意味づけを一度やめ、体感に戻ると整います。
+</p>
+</div>
+
+<!-- 九星 -->
+<div class="section" data-k="九星">
+<h2>九星気学</h2>
+
+<h3>気質</h3>
+<p>
+静と動を行き来する星回り。
+停滞は失敗ではなく、準備期間です。
+</p>
+
+<div class="hr"></div>
+
+<h3>深層テーマ</h3>
+<p>
+「動いていない自分」への不安。
+しかし実際は内側で大きく進んでいます。
+</p>
+
+<h3>迷いやすいポイント</h3>
+<p>
+他人のペースに合わせすぎること。
+</p>
+
+<h3>今の使い方</h3>
+<p>
+外に出るより、環境を整えることが先。
+</p>
+</div>
+
+<!-- 西洋占星術 -->
+<div class="section" data-k="西洋">
+<h2>西洋占星術</h2>
+
+<h3>太陽的性質</h3>
+<p>
+社会的には理性的で落ち着いた振る舞い。
+</p>
+
+<h3>月的性質</h3>
+<p>
+内面は非常に感受性が高く、違和感に敏感。
+</p>
+
+<div class="hr"></div>
+
+<h3>深層テーマ</h3>
+<p>
+「感じていることを無視しない」という課題。
+</p>
+
+<h3>迷いやすいポイント</h3>
+<p>
+感情を論理で処理しすぎること。
+</p>
+
+<h3>今の使い方</h3>
+<p>
+理由より先に、感覚を認める。
+</p>
+</div>
+
+<!-- 姓名判断 -->
+<div class="section" data-k="姓名">
+<h2>姓名判断</h2>
+
+<h3>名前のエネルギー</h3>
+<p>
+橋渡し・調整・中庸。
+極端を和らげる響きを持ちます。
+</p>
+
+<div class="hr"></div>
+
+<h3>深層テーマ</h3>
+<p>
+「間に立つこと」への使命感。
+</p>
+
+<h3>迷いやすいポイント</h3>
+<p>
+自分の立ち位置を後回しにすること。
+</p>
+
+<h3>今の使い方</h3>
+<p>
+まず自分の位置を決めてから関わる。
+</p>
+</div>
+
+</div>
+
+<script>
+const order=["統合","四柱","数秘","九星","西洋","姓名"];
+
+function uranau(){
+  if(!sei.value||!mei.value||!birth.value){
+    alert("すべて入力してください");return;
+  }
+  const tabs=document.getElementById("tabs");
+  tabs.innerHTML="";tabs.style.display="flex";
+  order.forEach((k,i)=>{
+    const t=document.createElement("div");
+    t.className="tab"+(i===0?" active":"");
+    t.textContent=k;
+    t.onclick=()=>selectTab(k);
+    tabs.appendChild(t);
+  });
+  selectTab(order[0]);
+}
+
+function selectTab(k){
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.classList.toggle("active",t.textContent===k)
+  });
+  document.querySelectorAll(".section").forEach(s=>{
+    s.classList.toggle("active",s.dataset.k===k)
+  });
+}
+</script>
+
+</body>
+</html>
