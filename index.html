@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>統合占い｜8</title>
+<style>
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+  background:#0f1220;color:#fff;margin:0;padding:14px
+}
+h1{text-align:center;margin-bottom:10px;font-size:20px}
+label{display:block;margin-top:10px}
+input,button{
+  width:100%;padding:10px;margin-top:6px;font-size:16px;
+  border-radius:8px;border:none
+}
+input{background:#0f1220;color:#fff;border:1px solid #333}
+button{margin-top:16px;background:#6c7cff;color:#fff;font-size:18px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:16px 0}
+.tab{
+  padding:8px 14px;border-radius:20px;
+  background:#24285a;white-space:nowrap;font-size:14px
+}
+.tab.active{background:#6c7cff}
+.section{
+  display:none;background:#1b1f3a;
+  padding:14px;border-radius:12px
+}
+.section.active{display:block}
+.section h2{
+  font-size:17px;border-bottom:1px solid #444;
+  padding-bottom:6px;margin-top:0
+}
+.section h3{font-size:15px;margin-top:18px}
+.section p{line-height:2.0;margin:10px 0}
+.hr{height:1px;background:#2a2f66;margin:16px 0}
+.small{opacity:.8;font-size:13px}
+</style>
+</head>
+
+<body>
+
+<h1>統合占い</h1>
+
+<label>姓<input id="sei"></label>
+<label>名<input id="mei"></label>
+<label>生年月日<input type="date" id="birth"></label>
+
+<button onclick="uranau()">占う</button>
+
+<div class="tabs" id="tabs" style="display:none"></div>
+<div id="sections"></div>
+
+<script>
+const tabsOrder=["総合","四柱","数秘","九星","西洋","姓名"];
+
+function typeOf(d){
+ const n=d.replaceAll("-","").split("").reduce((a,b)=>a+Number(b),0)%5;
+ return ["A","B","C","D","E"][n];
+}
+
+const TYPE={
+A:"感覚・直感タイプ",
+B:"思考・構造タイプ",
+C:"統合・俯瞰タイプ",
+D:"実行・現実タイプ",
+E:"内省・探求タイプ"
+};
+
+const TEXT={
+総合:{
+A:{
+o:`あなたは周囲から見ると、柔らかく感受性が高い人として映りやすいでしょう。
+空気を読むことや、場の流れに自然と合わせることができるため、
+「一緒にいると安心する」「話しやすい」と感じられることが多いはずです。
+自分では無意識でも、人の感情や微妙な変化を感じ取っています。`,
+u:`一方で内面では、迷いや違和感をかなり深く感じています。
+本当は納得しきれていないのに、周囲に合わせて進めてしまった経験も
+少なくないかもしれません。
+感覚が鋭い分、割り切れないものを抱え込みやすいのです。`,
+s:`あなたの強みは「感じ取る力」そのものです。
+小さなズレや違和感を察知できることは、
+人生の方向を微調整するセンサーとして非常に価値があります。
+これは後天的に身につくものではありません。`,
+m:`答えを急ごうとすると、自分を否定してしまう点が迷いやすいポイントです。
+決められない＝弱い、と思い込むとバランスを崩します。`,
+n:`今は結論を出す時期ではなく、
+「感じ切る」「違和感を無視しない」こと自体が前進です。
+言葉にできなくても、感覚を尊重してください。`
+},
+B:{
+o:`理性的で落ち着いた印象を与えやすく、
+周囲からは「判断を任せられる人」として見られることが多いでしょう。
+安定感があり、場を整える役割を自然と担っています。`,
+u:`内側では思考が常に動き続け、
+整理が追いつかないまま抱え込んでしまう傾向があります。
+静かに見えて、頭の中は忙しいタイプです。`,
+s:`物事を構造的に捉え、理解し直す力はあなたの大きな武器です。
+状況を安定させる力があります。`,
+m:`自分の分以上の責任を引き受けてしまうこと。`,
+n:`すべてを一度に考えなくて大丈夫です。
+切り分けるだけで、心はかなり軽くなります。`
+},
+C:{
+o:`冷静で全体を俯瞰している人として映りやすく、
+調整役やまとめ役を任されることが多いでしょう。`,
+u:`自分のことを後回しにしやすく、
+停滞している感覚を内側で抱えやすいタイプです。`,
+s:`複数の視点を同時に保てる希少な力。`,
+m:`決めないことで責められているように感じること。`,
+n:`今は「保留」が最善です。統合されるまで待ってください。`
+},
+D:{
+o:`行動力があり、現実的に物事を前へ進める人として見られます。`,
+u:`内面では焦りや不安を抱えやすく、止まることに恐れがあります。`,
+s:`まず動いて調整する推進力。`,
+m:`粗さや消耗。`,
+n:`一度立ち止まることで、次の一手が洗練されます。`
+},
+E:{
+o:`静かで深く考える人という印象を持たれます。`,
+u:`内にこもりすぎて動けなくなることがあります。`,
+s:`洞察力と思索の深さ。`,
+m:`行動の遅れ。`,
+n:`言葉にすることで、内側が動き始めます。`
+}
+},
+
+四柱:{
+A:{
+o:`生まれ持った宿命として、
+あなたは「感受性」を人生の軸として持っています。
+これは後天的に変えにくく、幼少期から一貫して現れてきた性質です。`,
+u:`無意識の反応として、周囲の感情を自分のもののように受け取りやすく、
+疲れやすさとして現れることがあります。`,
+s:`人の本音に気づける力は、生まれ持った資質です。`,
+m:`環境の影響を受けすぎること。`,
+n:`距離を取ることは逃げではありません。`
+},
+B:{
+o:`論理と秩序を重んじる宿命を持ちます。`,
+u:`感情よりも思考が先に動く傾向があります。`,
+s:`状況を安定させる力。`,
+m:`柔軟さを失いやすい点。`,
+n:`余白を許してください。`
+},
+C:{
+o:`調整と統合を担う宿命。`,
+u:`自分の役割を探し続けやすい。`,
+s:`俯瞰力。`,
+m:`停滞感。`,
+n:`流れが来るまで待つ。`
+},
+D:{
+o:`現実を動かす宿命。`,
+u:`結果を急ぎやすい。`,
+s:`実行力。`,
+m:`消耗。`,
+n:`ペース調整。`
+},
+E:{
+o:`探求を深める宿命。`,
+u:`内向きになりやすい。`,
+s:`洞察。`,
+m:`行動不足。`,
+n:`小さく動く。`
+}
+},
+
+数秘:{
+A:{o:`感覚優位。`,u:`揺れやすい。`,s:`直感。`,m:`迷い。`,n:`感じる。`},
+B:{o:`思考優位。`,u:`固まりやすい。`,s:`分析。`,m:`重責。`,n:`分ける。`},
+C:{o:`統合型。`,u:`停滞。`,s:`俯瞰。`,m:`決断。`,n:`待つ。`},
+D:{o:`行動型。`,u:`焦り。`,s:`推進。`,m:`粗さ。`,n:`整える。`},
+E:{o:`内省型。`,u:`内向。`,s:`洞察。`,m:`遅れ。`,n:`言語化。`}
+},
+
+九星:{
+A:{o:`流れに敏感。`,u:`影響受けやすい。`,s:`察知。`,m:`疲労。`,n:`距離。`},
+B:{o:`安定重視。`,u:`硬直。`,s:`継続。`,m:`停滞。`,n:`変化。`},
+C:{o:`中庸。`,u:`迷い。`,s:`調整。`,m:`決断。`,n:`時期待ち。`},
+D:{o:`前進期質。`,u:`消耗。`,s:`突破。`,m:`焦燥。`,n:`休息。`},
+E:{o:`内向期質。`,u:`閉じる。`,s:`熟成。`,m:`孤立。`,n:`共有。`}
+},
+
+西洋:{
+A:{o:`感情表現型。`,u:`揺れ。`,s:`共感。`,m:`境界。`,n:`守る。`},
+B:{o:`理知的。`,u:`冷静過多。`,s:`理解。`,m:`距離。`,n:`緩める。`},
+C:{o:`バランス型。`,u:`曖昧。`,s:`調和。`,m:`決断。`,n:`一点集中。`},
+D:{o:`行動表現。`,u:`強引。`,s:`推進。`,m:`衝突。`,n:`間を取る。`},
+E:{o:`内的表現。`,u:`閉鎖。`,s:`洞察。`,m:`伝達。`,n:`言葉に。`}
+},
+
+姓名:{
+A:{o:`柔らかい印象。`,u:`揺れ。`,s:`親和。`,m:`流され。`,n:`軸を。`},
+B:{o:`信頼感。`,u:`重圧。`,s:`責任。`,m:`抱え込み。`,n:`手放す。`},
+C:{o:`中立印象。`,u:`不明瞭。`,s:`調整。`,m:`曖昧。`,n:`明確化。`},
+D:{o:`力強い。`,u:`消耗。`,s:`突破。`,m:`粗さ。`,n:`整える。`},
+E:{o:`静的印象。`,u:`閉じ。`,s:`深さ。`,m:`停滞。`,n:`動かす。`}
+}
+};
+
+function uranau(){
+ if(!sei.value||!mei.value||!birth.value){
+   alert("すべて入力してください");return;
+ }
+ const t=typeOf(birth.value);
+ const tabs=document.getElementById("tabs");
+ const sec=document.getElementById("sections");
+ tabs.innerHTML="";sec.innerHTML="";
+ tabs.style.display="flex";
+
+ tabsOrder.forEach((k,i)=>{
+  const tb=document.createElement("div");
+  tb.className="tab"+(i===0?" active":"");
+  tb.textContent=k;
+  tb.onclick=()=>selectTab(k);
+  tabs.appendChild(tb);
+
+  const d=TEXT[k][t];
+  const s=document.createElement("div");
+  s.className="section"+(i===0?" active":"");
+  s.dataset.k=k;
+  s.innerHTML=`
+   <h2>${k}</h2>
+   <p class="small">あなたのタイプ：${TYPE[t]}</p>
+   <h3>表の顔</h3><p>${d.o}</p>
+   <h3>裏の顔</h3><p>${d.u}</p>
+   <div class="hr"></div>
+   <h3>強みの源泉</h3><p>${d.s}</p>
+   <h3>迷いやすいポイント</h3><p>${d.m}</p>
+   <h3>今の使い方</h3><p>${d.n}</p>
+  `;
+  sec.appendChild(s);
+ });
+}
+
+function selectTab(k){
+ document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.textContent===k));
+ document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.dataset.k===k));
+}
+</script>
+
+</body>
+</html>
