@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>統合占い｜8</title>
+
+<style>
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+  background:#0f1220;color:#fff;margin:0;padding:14px
+}
+h1{text-align:center;margin-bottom:10px}
+label{display:block;margin-top:10px}
+input,select,button{
+  width:100%;padding:10px;margin-top:6px;font-size:16px;
+  border-radius:8px;border:none
+}
+input,select{background:#0f1220;color:#fff;border:1px solid #333}
+button{margin-top:16px;background:#6c7cff;color:#fff;font-size:18px}
+
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:16px 0}
+.tab{
+  padding:8px 14px;border-radius:20px;background:#24285a;
+  white-space:nowrap;font-size:14px
+}
+.tab.active{background:#6c7cff}
+
+.section{
+  display:none;background:#1b1f3a;padding:14px;border-radius:12px
+}
+.section.active{display:block}
+.section h2{
+  font-size:17px;border-bottom:1px solid #444;padding-bottom:6px;margin-top:0
+}
+.section h3{font-size:15px;margin:10px 0 4px}
+.section p{line-height:1.8;margin:6px 0 10px}
+</style>
+</head>
+
+<body>
+
+<h1>統合占い</h1>
+
+<label>姓<input id="sei"></label>
+<label>名<input id="mei"></label>
+<label>生年月日<input type="date" id="birth"></label>
+<label>性別
+<select id="gender">
+<option>男性</option><option>女性</option><option>その他</option>
+</select>
+</label>
+
+<button onclick="uranau()">占う</button>
+
+<div class="tabs" id="tabs" style="display:none"></div>
+
+<div id="sections">
+
+<!-- 統合 -->
+<div class="section" data-k="統合">
+<h2>統合リーディング</h2>
+<p>
+あなたは一つの占術で語りきれる存在ではありません。
+複数の視点を行き来し、矛盾を抱えたまま進めること自体が資質です。
+</p>
+<h3>人生テーマ</h3>
+<p>
+分けないこと。決めつけないこと。
+その姿勢が、結果として人や流れを整えていきます。
+</p>
+</div>
+
+<!-- 四柱推命 -->
+<div class="section" data-k="四柱">
+<h2>四柱推命</h2>
+<h3>表の性質</h3>
+<p>
+環境への適応力が高く、役割を自然に引き受ける命式。
+</p>
+<h3>裏の性質</h3>
+<p>
+本質は非常に独立的。群れの中でも自分の座標を失いません。
+</p>
+<h3>人生への影響</h3>
+<p>
+運命に逆らうより、流れを読んで角度を変えることで道が開きます。
+</p>
+</div>
+
+<!-- 数秘 -->
+<div class="section" data-k="数秘">
+<h2>数秘術</h2>
+<h3>本質数</h3>
+<p>
+統合・循環・調和を示す数の影響が強め。
+</p>
+<h3>強み</h3>
+<p>
+点と点を結び、意味を見出す力。
+</p>
+<h3>注意点</h3>
+<p>
+自分より他者を優先しすぎると消耗します。
+</p>
+</div>
+
+<!-- 九星 -->
+<div class="section" data-k="九星">
+<h2>九星気学</h2>
+<h3>気質</h3>
+<p>
+静と動を行き来する星回り。停滞は準備期間。
+</p>
+<h3>今の流れ</h3>
+<p>
+外に出るより、内側を整えることで運気が動きます。
+</p>
+</div>
+
+<!-- 西洋占星術 -->
+<div class="section" data-k="西洋">
+<h2>西洋占星術</h2>
+<h3>太陽的性質</h3>
+<p>
+社会的役割では穏やかさと理性が前面に出ます。
+</p>
+<h3>月的性質</h3>
+<p>
+内面では感受性が高く、違和感に敏感。
+</p>
+</div>
+
+<!-- 姓名判断 -->
+<div class="section" data-k="姓名">
+<h2>姓名判断</h2>
+<h3>名前のエネルギー</h3>
+<p>
+名前には「調整役」「橋渡し」の響きがあります。
+</p>
+<h3>使いどころ</h3>
+<p>
+対立が生じた場面で自然と力を発揮します。
+</p>
+</div>
+
+</div>
+
+<script>
+const order=["統合","四柱","数秘","九星","西洋","姓名"];
+
+function uranau(){
+  if(!sei.value||!mei.value||!birth.value){
+    alert("すべて入力してください");return;
+  }
+  const tabs=document.getElementById("tabs");
+  tabs.innerHTML="";tabs.style.display="flex";
+  order.forEach((k,i)=>{
+    const t=document.createElement("div");
+    t.className="tab"+(i===0?" active":"");
+    t.textContent=k;
+    t.onclick=()=>selectTab(k);
+    tabs.appendChild(t);
+  });
+  selectTab(order[0]);
+}
+
+function selectTab(k){
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.classList.toggle("active",t.textContent===k)
+  });
+  document.querySelectorAll(".section").forEach(s=>{
+    s.classList.toggle("active",s.dataset.k===k)
+  });
+}
+</script>
+
+</body>
+</html>
