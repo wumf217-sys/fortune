@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>統合占い｜8</title>
+
+<style>
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+  background:#0f1220;color:#fff;margin:0;padding:14px
+}
+h1{text-align:center;margin-bottom:10px}
+label{display:block;margin-top:10px}
+input,select,button{
+  width:100%;padding:10px;margin-top:6px;font-size:16px;
+  border-radius:8px;border:none
+}
+input,select{background:#0f1220;color:#fff;border:1px solid #333}
+button{margin-top:16px;background:#6c7cff;color:#fff;font-size:18px}
+
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:16px 0}
+.tab{
+  padding:8px 14px;border-radius:20px;background:#24285a;
+  white-space:nowrap;font-size:14px
+}
+.tab.active{background:#6c7cff}
+
+.section{
+  display:none;background:#1b1f3a;padding:14px;border-radius:12px
+}
+.section.active{display:block}
+.section h2{
+  font-size:17px;border-bottom:1px solid #444;padding-bottom:6px;margin-top:0
+}
+.section h3{font-size:15px;margin:10px 0 4px}
+.section p{line-height:1.8;margin:6px 0 10px}
+.hr{height:1px;background:#2a2f66;margin:10px 0}
+</style>
+</head>
+
+<body>
+
+<h1>統合占い</h1>
+
+<label>姓<input id="sei"></label>
+<label>名<input id="mei"></label>
+<label>生年月日<input type="date" id="birth"></label>
+<label>性別
+<select id="gender">
+<option value="neutral">選択しない</option>
+<option value="male">男性</option>
+<option value="female">女性</option>
+</select>
+</label>
+
+<button onclick="uranau()">占う</button>
+
+<div class="tabs" id="tabs" style="display:none"></div>
+<div id="sections"></div>
+
+<script>
+const tabsOrder=["統合","四柱","数秘","九星","西洋","姓名"];
+let userType="C";
+let genderTone="neutral";
+
+function calcType(dateStr){
+  const n=dateStr.replaceAll("-","").split("").reduce((a,b)=>a+Number(b),0)%3;
+  return ["A","B","C"][n];
+}
+
+const text={
+統合:{
+A:"感覚や違和感を無視せずに進む人です。答えは外より内にあります。",
+B:"物事を構造として理解し、整理しながら前に進む人です。",
+C:"複数の視点を同時に保ち、全体を見渡す統合型です。"
+},
+四柱:{
+A:"流れに身を任せる柔軟さが強みです。",
+B:"役割と責任を意識する命式です。",
+C:"環境と自分の関係性を読む力があります。"
+},
+数秘:{
+A:"直感的に意味を掴む数の影響。",
+B:"数字を通して秩序を感じるタイプ。",
+C:"循環や全体性に意識が向きやすい数。"
+},
+九星:{
+A:"動くより感じることで整います。",
+B:"段階的に進むことで運が開きます。",
+C:"止まる時間も前進の一部です。"
+},
+西洋:{
+A:"感情の波がヒントになります。",
+B:"思考と感情のバランスがテーマ。",
+C:"内面と外面を橋渡しする配置です。"
+},
+姓名:{
+A:"響きが感覚に影響します。",
+B:"名前が役割意識を強めます。",
+C:"調整役としての力を持つ名前です。"
+}
+};
+
+function uranau(){
+  if(!sei.value||!mei.value||!birth.value){
+    alert("すべて入力してください");return;
+  }
+  userType=calcType(birth.value);
+  genderTone=gender.value;
+
+  const tabs=document.getElementById("tabs");
+  tabs.innerHTML="";tabs.style.display="flex";
+  const sections=document.getElementById("sections");
+  sections.innerHTML="";
+
+  tabsOrder.forEach((k,i)=>{
+    const t=document.createElement("div");
+    t.className="tab"+(i===0?" active":"");
+    t.textContent=k;
+    t.onclick=()=>selectTab(k);
+    tabs.appendChild(t);
+
+    const s=document.createElement("div");
+    s.className="section"+(i===0?" active":"");
+    s.dataset.k=k;
+    s.innerHTML=`
+      <h2>${k}</h2>
+      <p>${text[k][userType]}</p>
+      <div class="hr"></div>
+      <p>今のあなたにとって、この視点は「無理に使うもの」ではなく、
+      必要になった時に思い出せば十分です。</p>
+    `;
+    sections.appendChild(s);
+  });
+}
+
+function selectTab(k){
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.classList.toggle("active",t.textContent===k)
+  });
+  document.querySelectorAll(".section").forEach(s=>{
+    s.classList.toggle("active",s.dataset.k===k)
+  });
+}
+</script>
+
+</body>
+</html>
