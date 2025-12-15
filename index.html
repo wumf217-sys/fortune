@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>統合占いジェネレーター</title>
+
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", sans-serif;
+  background: #0f1220;
+  color: #fff;
+  margin: 0;
+  padding: 16px;
+}
+h1 {
+  text-align: center;
+}
+label {
+  display: block;
+  margin-top: 12px;
+}
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
+button {
+  margin-top: 20px;
+  background: #6c7cff;
+  color: #fff;
+  font-size: 18px;
+}
+#result {
+  margin-top: 24px;
+  background: #1b1f3a;
+  padding: 16px;
+  border-radius: 12px;
+}
+.section {
+  margin-bottom: 20px;
+}
+.section h2 {
+  font-size: 18px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 6px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>統合占い</h1>
+
+<label>姓
+<input id="sei" /></label>
+
+<label>名
+<input id="mei" /></label>
+
+<label>生年月日
+<input type="date" id="birth" /></label>
+
+<label>性別
+<select id="gender">
+<option>男性</option>
+<option>女性</option>
+<option>その他</option>
+</select></label>
+
+<button onclick="uranau()">占う</button>
+
+<div id="result"></div>
+
+<script>
+function uranau() {
+  const sei = document.getElementById("sei").value;
+  const mei = document.getElementById("mei").value;
+  const birth = document.getElementById("birth").value;
+
+  if (!sei || !mei || !birth) {
+    alert("すべて入力してください");
+    return;
+  }
+
+  const result = `
+  <div class="section">
+    <h2>① 宿命（性質の核）</h2>
+    <p>あなたは「複数の視点を同時に持てるバランサー型」。表では柔軟、裏では非常に芯が強い。</p>
+  </div>
+
+  <div class="section">
+    <h2>② 思考の癖・行動傾向</h2>
+    <p>直感と理性を行き来しながら決断するタイプ。即断より熟考。</p>
+  </div>
+
+  <div class="section">
+    <h2>③ 強みの源泉</h2>
+    <p>人の感情・流れ・空気を読む力。占い的資質が非常に高い。</p>
+  </div>
+
+  <div class="section">
+    <h2>④ 弱さ・迷うポイント</h2>
+    <p>考えすぎて動けなくなること。正解を探しすぎる傾向。</p>
+  </div>
+
+  <div class="section">
+    <h2>⑤ 今の時期（流れ）</h2>
+    <p>切り替え期。古い型を手放すことで一段上に進める。</p>
+  </div>
+
+  <div class="section">
+    <h2>⑥ 方向性</h2>
+    <p>「全部やろうとしない」。一つ形にすること。</p>
+  </div>
+
+  <div class="section">
+    <h2>⑦ 開運アクション</h2>
+    <p>朝一番に直感で決めたことを一つ実行する。</p>
+  </div>
+
+  <div class="section">
+    <h2>⑧ メッセージ</h2>
+    <p>あなたはもう十分見えている。あとは信じて進むだけ。</p>
+  </div>
+  `;
+
+  document.getElementById("result").innerHTML = result;
+}
+</script>
+
+</body>
+</html>
