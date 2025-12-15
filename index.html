@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>統合占い｜8</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;background:#0f1220;color:#fff;margin:0;padding:14px}
+h1{text-align:center;margin-bottom:10px}
+label{display:block;margin-top:10px}
+input,button{width:100%;padding:10px;margin-top:6px;font-size:16px;border-radius:8px;border:none}
+input{background:#0f1220;color:#fff;border:1px solid #333}
+button{margin-top:16px;background:#6c7cff;color:#fff;font-size:18px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:16px 0}
+.tab{padding:8px 14px;border-radius:20px;background:#24285a;white-space:nowrap;font-size:14px}
+.tab.active{background:#6c7cff}
+.section{display:none;background:#1b1f3a;padding:14px;border-radius:12px}
+.section.active{display:block}
+.section h2{font-size:17px;border-bottom:1px solid #444;padding-bottom:6px;margin-top:0}
+.section h3{font-size:15px;margin-top:14px}
+.section p{line-height:2.0;margin:8px 0}
+.hr{height:1px;background:#2a2f66;margin:14px 0}
+.small{opacity:.8;font-size:13px}
+</style>
+</head>
+
+<body>
+
+<h1>統合占い</h1>
+
+<label>姓<input id="sei"></label>
+<label>名<input id="mei"></label>
+<label>生年月日<input type="date" id="birth"></label>
+
+<button onclick="uranau()">占う</button>
+
+<div class="tabs" id="tabs" style="display:none"></div>
+<div id="sections"></div>
+
+<script>
+const tabsOrder=["統合","四柱","数秘","九星","西洋","姓名"];
+function typeOf(d){
+ const n=d.replaceAll("-","").split("").reduce((a,b)=>a+Number(b),0)%5;
+ return ["A","B","C","D","E"][n];
+}
+const TYPE={
+A:"感覚・直感",
+B:"思考・構造",
+C:"統合・俯瞰",
+D:"実行・現実",
+E:"内省・探求"
+};
+
+const TEXT={
+統合:{
+A:{
+o:"周囲からは感受性が高く、柔らかい人として見られやすいでしょう。空気を読むことが自然で、無理をしている意識がなくても周囲に合わせられる人です。",
+u:"その一方で、内側では迷いや違和感を多く抱えやすく、本当は納得していないまま動いている場面も少なくありません。",
+s:"小さな変化や違和感を察知する力は、方向修正のセンサーとして非常に優秀です。",
+m:"答えを出すまでに時間がかかり、自分を責めてしまうこと。",
+n:"今は結論を急がず、感じ切ることそのものを許してください。"
+},
+B:{
+o:"落ち着いていて理性的、安心感のある人として見られます。判断を任されることも多いでしょう。",
+u:"内面では常に考えが巡り、整理が追いつかないまま抱え込んでしまいがちです。",
+s:"物事を分解し、理解し直す力は状況を安定させます。",
+m:"自分の分以上の責任を背負ってしまうこと。",
+n:"全部を一度に考えず、切り分けるだけで楽になります。"
+},
+C:{
+o:"冷静で全体を見ている人、調整役として映りやすいでしょう。",
+u:"自分のことを後回しにしやすく、停滞している感覚を持つことがあります。",
+s:"多視点を保ったまま判断できる稀有な力。",
+m:"決めないことで責められている気がすること。",
+n:"今は保留が最善です。統合されるまで待ってください。"
+},
+D:{
+o:"行動力があり、現実的に前へ進む人として見られます。",
+u:"内心では焦りや不安を感じやすく、止まることが怖い傾向があります。",
+s:"まず動いて調整する推進力。",
+m:"粗さや消耗。",
+n:"一度立ち止まることで、次の一手が洗練されます。"
+},
+E:{
+o:"静かで深く考える人という印象を持たれます。",
+u:"内にこもりすぎて、動けなくなることがあります。",
+s:"洞察力と思索の深さ。",
+m:"行動の遅れ。",
+n:"言葉にすることで、内側が動き始めます。"
+}
+}
+};
+
+function uranau(){
+ if(!sei.value||!mei.value||!birth.value){alert("すべて入力してください");return;}
+ const t=typeOf(birth.value);
+ const tabs=document.getElementById("tabs");
+ const sec=document.getElementById("sections");
+ tabs.innerHTML="";sec.innerHTML="";tabs.style.display="flex";
+
+ tabsOrder.forEach((k,i)=>{
+  const tb=document.createElement("div");
+  tb.className="tab"+(i===0?" active":"");
+  tb.textContent=k;
+  tb.onclick=()=>selectTab(k);
+  tabs.appendChild(tb);
+
+  const d=TEXT["統合"][t]; // 今回は統合を代表表示
+  const s=document.createElement("div");
+  s.className="section"+(i===0?" active":"");
+  s.dataset.k=k;
+  s.innerHTML=`
+   <h2>${k}</h2>
+   <p class="small">あなたのタイプ：${TYPE[t]}</p>
+   <h3>表の顔</h3><p>${d.o}</p>
+   <h3>裏の顔</h3><p>${d.u}</p>
+   <div class="hr"></div>
+   <h3>強みの源泉</h3><p>${d.s}</p>
+   <h3>迷いやすいポイント</h3><p>${d.m}</p>
+   <h3>今の使い方</h3><p>${d.n}</p>
+  `;
+  sec.appendChild(s);
+ });
+}
+
+function selectTab(k){
+ document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.textContent===k));
+ document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.dataset.k===k));
+}
+</script>
+
+</body>
+</html>
