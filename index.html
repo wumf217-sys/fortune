@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>統合占い｜8</title>
+
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", sans-serif;
+  background: #0f1220;
+  color: #fff;
+  margin: 0;
+  padding: 14px;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 12px;
+}
+label {
+  display: block;
+  margin-top: 10px;
+}
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
+input, select {
+  background: #0f1220;
+  color: #fff;
+  border: 1px solid #333;
+}
+button {
+  margin-top: 16px;
+  background: #6c7cff;
+  color: #fff;
+  font-size: 18px;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  margin: 16px 0;
+}
+.tab {
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #24285a;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.tab.active {
+  background: #6c7cff;
+}
+
+.section {
+  display: none;
+  background: #1b1f3a;
+  padding: 14px;
+  border-radius: 12px;
+}
+.section.active {
+  display: block;
+}
+.section h2 {
+  font-size: 17px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 6px;
+  margin-top: 0;
+}
+.section h3 {
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.section p {
+  line-height: 1.8;
+  margin: 6px 0 10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>統合占い</h1>
+
+<label>姓
+<input id="sei" /></label>
+
+<label>名
+<input id="mei" /></label>
+
+<label>生年月日
+<input type="date" id="birth" /></label>
+
+<label>性別
+<select id="gender">
+<option>男性</option>
+<option>女性</option>
+<option>その他</option>
+</select></label>
+
+<button onclick="uranau()">占う</button>
+
+<div class="tabs" id="tabs" style="display:none;"></div>
+
+<div id="sections">
+
+<div class="section" data-k="宿命">
+<h2>① 宿命｜性質の核</h2>
+
+<h3>人生テーマ</h3>
+<p>
+あなたの人生テーマは「分けないこと」。  
+善悪、正誤、強さと弱さ──そうした二項対立を越えて、  
+<strong>すべてを受け入れ、複数の視点で視る</strong>ことにあります。
+</p>
+
+<h3>魂レベル</h3>
+<p>
+魂の成熟度は高め。  
+過去の経験を通して「一つの答えに閉じない」ことを学んできました。  
+そのため、即断よりも“腑に落ちるまで待つ”傾向があります。
+</p>
+
+<h3>影響の強いエネルギー</h3>
+<p>
+統合・調停・俯瞰。  
+場の流れを無意識に調整する力が、人生全体に影響しています。
+</p>
+</div>
+
+<div class="section" data-k="思考">
+<h2>② 思考の癖・行動傾向</h2>
+
+<p>
+直感で全体像を掴み、その後に理由を整理するタイプ。  
+考えすぎに見える時もありますが、それは精度を高めるための工程です。
+</p>
+
+<h3>迷いやすいポイント</h3>
+<p>
+「どれか一つを選ぶ」場面。  
+選ばなかった可能性まで見えてしまうため、動きが遅くなることがあります。
+</p>
+</div>
+
+<div class="section" data-k="表">
+<h2>③ 表の顔</h2>
+
+<p>
+穏やかで話しやすい印象。  
+周囲の空気を自然に読み、衝突を避ける立ち回りができます。
+</p>
+
+<h3>対人傾向</h3>
+<p>
+聞き役に回ることが多く、相談されやすい存在。  
+安心感を与えるエネルギーを持っています。
+</p>
+</div>
+
+<div class="section" data-k="裏">
+<h2>④ 裏の顔</h2>
+
+<p>
+内側では非常に冷静でシビア。  
+違和感や本質を見逃さず、静かに蓄積しています。
+</p>
+
+<h3>本音</h3>
+<p>
+「分かったつもりで判断されること」への強い抵抗。  
+あなたは常に“多面性”を守ろうとしています。
+</p>
+</div>
+
+<div class="section" data-k="強み">
+<h2>⑤ 強み・弱さ</h2>
+
+<h3>強み</h3>
+<p>
+洞察力・共感力・全体把握。  
+人や物事を「ラベル化せずに見る」力があります。
+</p>
+
+<h3>弱さ</h3>
+<p>
+決断の遅さ・自己消耗。  
+ただしこれは、扱い方次第で最大の強みになります。
+</p>
+</div>
+
+<div class="section" data-k="流れ">
+<h2>⑥ 今の時期（流れ）</h2>
+
+<h3>年運</h3>
+<p>
+切り替えの年。  
+古い役割や期待を手放すことで、自然な流れが戻ります。
+</p>
+
+<h3>月運</h3>
+<p>
+内省が進みやすい時期。  
+無理に外へ出るより、整えることが優先です。
+</p>
+</div>
+
+<div class="section" data-k="開運">
+<h2>⑦ 開運アクション</h2>
+
+<p>
+・違和感を言葉にする  
+・「やらないこと」を決める  
+・一人の時間を質で確保する
+</p>
+
+<p>
+行動量よりも、選択の精度を上げることが運を開きます。
+</p>
+</div>
+
+<div class="section" data-k="メッセ">
+<h2>⑧ メッセージ</h2>
+
+<p>
+あなたはもう十分に見ています。  
+答えを探す段階は終わり、  
+<strong>気づきを“どう扱うか”の段階に来ています。</strong>
+</p>
+
+<p>
+insighTrigger は、すでに始まっています。
+</p>
+</div>
+
+</div>
+
+<script>
+const order = ["宿命","思考","表","裏","強み","流れ","開運","メッセ"];
+
+function uranau(){
+  const sei = document.getElementById("sei").value;
+  const mei = document.getElementById("mei").value;
+  const birth = document.getElementById("birth").value;
+  if(!sei || !mei || !birth){
+    alert("すべて入力してください");
+    return;
+  }
+
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+  tabs.style.display = "flex";
+
+  order.forEach((k,i)=>{
+    const t = document.createElement("div");
+    t.className = "tab" + (i===0 ? " active" : "");
+    t.textContent = k;
+    t.onclick = ()=>selectTab(k);
+    tabs.appendChild(t);
+  });
+
+  selectTab(order[0]);
+}
+
+function selectTab(k){
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.classList.toggle("active", t.textContent===k);
+  });
+  document.querySelectorAll(".section").forEach(s=>{
+    s.classList.toggle("active", s.dataset.k===k);
+  });
+}
+</script>
+
+</body>
+</html>
