@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>統合占い</title>
+<style>
+body {
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  background:#f7f7f7;
+  color:#222;
+  margin:0;
+}
+header {
+  background:#111;
+  color:#fff;
+  padding:16px;
+  text-align:center;
+}
+main {
+  max-width:760px;
+  margin:auto;
+  padding:20px;
+}
+input,button {
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  font-size:16px;
+}
+button {
+  background:#111;
+  color:#fff;
+  border:none;
+}
+.tabs {
+  display:flex;
+  gap:8px;
+  border-bottom:1px solid #ccc;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+.tab {
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:14px;
+}
+.tab.active {
+  border-bottom:2px solid #111;
+  font-weight:bold;
+}
+.content {
+  display:none;
+  padding-top:18px;
+  line-height:1.95;
+}
+.content.active { display:block; }
+h2 { font-size:18px; margin-top:26px; }
+.note { font-size:14px; color:#555; }
+.box {
+  background:#fafafa;
+  border-left:3px solid #ddd;
+  padding:14px;
+  margin:18px 0;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+<header><h1>統合占い</h1></header>
+
+<main>
+<div id="input-area">
+  <input type="text" placeholder="姓">
+  <input type="text" placeholder="名">
+  <input type="date">
+  <button onclick="showResult()">占う</button>
+  <p class="note">※ 未来を断定せず、あなたの「今の構造」を読み解きます</p>
+</div>
+
+<div id="result-area" style="display:none;">
+  <div class="tabs">
+    <div class="tab active" onclick="openTab('general')">総合</div>
+    <div class="tab" onclick="openTab('shichu')">四柱推命</div>
+    <div class="tab" onclick="openTab('numerology')">数秘術</div>
+  </div>
+
+<!-- 総合 -->
+<div id="general" class="content active">
+<h2>あなたという人の在り方</h2>
+
+<p>
+あなたは、人から見ると落ち着いていて、
+感情に振り回されない人に見られやすいでしょう。
+その印象は間違いではありません。
+ただ、それは感情が少ないからではなく、
+一度内側で受け止めてから外に出しているからです。
+</p>
+
+<p>
+表向きは柔らかく合わせているように見えても、
+内側では「ここは譲らない」という感覚を
+静かに保ち続けています。
+だから流されているようで、実は流されていない。
+そのバランス感覚が、あなたの人生を形作ってきました。
+</p>
+
+<div class="box">
+周囲に合わせながらも、
+自分の重心だけはずらさない。
+それがあなたの自然な生き方です。
+</div>
+
+<p>
+迷うことが多かったとしても、
+それは優柔不断ではありません。
+見えている選択肢が多く、
+その一つ一つに意味を感じ取ってしまうからです。
+</p>
+
+<p>
+決めるまでに時間はかかりますが、
+一度選んだ道を「自分の選択だった」と
+後から受け止められる強さがあります。
+</p>
+
+<h2>総合的なテーマ</h2>
+<p>
+あなたの人生は、極端に振り切るよりも、
+複数の視点を抱えたまま進むことに意味があります。
+白黒を急がず、グレーの中で考え続ける力。
+それはあなたにしか持てない感覚です。
+</p>
+</div>
+
+<!-- 四柱推命 -->
+<div id="shichu" class="content">
+<h2>四柱推命から見る性質の深層</h2>
+
+<p>
+四柱推命で見るあなたは、
+内側に確かな熱量を持ちながら、
+それを外に出しすぎない構造をしています。
+だからこそ、周囲からは
+「安定している」「大人っぽい」と
+受け取られやすいでしょう。
+</p>
+
+<p>
+しかし内面では、感情が動いていないわけではありません。
+むしろ一度動くと深く、
+簡単には切り替えられない部分があります。
+それを知っているからこそ、
+最初から慎重になるのです。
+</p>
+
+<div class="box">
+勢いで進まないのは、
+感情を雑に扱いたくないから。
+四柱的には、それは未熟さではなく成熟です。
+</div>
+
+<p>
+あなたが迷うとき、
+それは「選べない」のではなく、
+「選んだ後の責任まで見えている」状態です。
+先を想像できてしまう分、
+軽い決断ができないだけなのです。
+</p>
+
+<p>
+四柱推命的に見ると、
+あなたは時間をかけて理解し、
+納得してから進むことで、
+後悔の少ない道を選び続けてきた人。
+その歩みは、静かですが確実です。
+</p>
+
+<h2>四柱からのまとめ</h2>
+<p>
+あなたは、速さよりも確かさを選ぶ人。
+誰かの正解ではなく、
+自分の中で筋が通る選択を
+積み重ねてきた人生です。
+</p>
+</div>
+
+<!-- 数秘（補足） -->
+<div id="numerology" class="content">
+<h2>数秘術から見る補足</h2>
+<p>
+あなたは納得してから動く思考タイプ。
+考える時間は、
+自分を守るための大切な工程です。
+</p>
+</div>
+
+</div>
+</main>
+
+<script>
+function showResult(){
+ document.getElementById("input-area").style.display="none";
+ document.getElementById("result-area").style.display="block";
+}
+function openTab(tab){
+ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+ document.querySelectorAll(".content").forEach(c=>c.classList.remove("active"));
+ document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add("active");
+ document.getElementById(tab).classList.add("active");
+}
+</script>
+</body>
+</html>
