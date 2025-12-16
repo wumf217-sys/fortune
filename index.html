@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>統合占い</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #111;
+      color: #fff;
+      padding: 16px;
+      text-align: center;
+    }
+    main {
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    input, button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      font-size: 16px;
+    }
+    button {
+      background: #111;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:active {
+      opacity: 0.8;
+    }
+    .tabs {
+      display: flex;
+      margin-top: 20px;
+      border-bottom: 1px solid #ccc;
+    }
+    .tab {
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .tab.active {
+      border-bottom: 2px solid #111;
+      font-weight: bold;
+    }
+    .content {
+      display: none;
+      padding-top: 16px;
+      line-height: 1.7;
+    }
+    .content.active {
+      display: block;
+    }
+    h2 {
+      margin-top: 24px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>統合占い</h1>
+</header>
+
+<main>
+  <div id="input-area">
+    <input type="text" placeholder="姓">
+    <input type="text" placeholder="名">
+    <input type="date">
+    <button onclick="showResult()">占う</button>
+  </div>
+
+  <div id="result-area" style="display:none;">
+    <div class="tabs">
+      <div class="tab active" onclick="openTab('general')">総合</div>
+      <div class="tab" onclick="openTab('shichu')">四柱推命</div>
+    </div>
+
+    <div id="general" class="content active">
+      <h2>あなたという人の本質</h2>
+      <p>
+        あなたは、表面的には落ち着いて見えたり、
+        自分をコントロールできている人に見られやすいかもしれません。
+        でも内側では、常に「どう在るべきか」「何を大切にするか」を
+        自分なりに考え続けている人です。
+      </p>
+      <p>
+        流されているようで流されていない。
+        合わせているようで、実は譲っていない部分がある。
+        その静かな芯が、あなたの人生全体を支えています。
+      </p>
+
+      <h2>表に出やすい顔と、内側の本音</h2>
+      <p>
+        人と関わる場面では、空気を読んだり、
+        相手に合わせたりする力が自然に働きます。
+        そのため「柔らかい人」「理解のある人」と見られやすいでしょう。
+      </p>
+      <p>
+        一方で心の奥では、
+        「本当はこうしたい」「ここだけは譲れない」という感覚を
+        しっかり持っています。
+      </p>
+      <p>
+        そのズレは弱さではなく、
+        あなたが自分を守るために身につけた知恵です。
+      </p>
+
+      <h2>あなたの宿命的なテーマ</h2>
+      <p>
+        あなたの人生には、
+        バランスを取ること、偏らないこと、
+        一方に寄りすぎないことが繰り返し現れます。
+      </p>
+      <p>
+        どちらかを否定するのではなく、
+        複数の視点を同時に抱えられること。
+        それがあなたの強さであり、役割です。
+      </p>
+    </div>
+
+    <div id="shichu" class="content">
+      <h2>四柱推命から見るあなたの性質</h2>
+      <p>
+        四柱推命で見るあなたは、
+        内側に熱を持ちながら、外側は静かなタイプです。
+      </p>
+      <p>
+        感情をむやみに表に出すことは少なく、
+        一度決めたことは簡単には揺らがない。
+        その分、心の中では何度も考え、納得してから動きます。
+      </p>
+
+      <h2>強みとして現れる部分</h2>
+      <p>
+        あなたの強みは、物事を一面的に見ないこと。
+        白か黒かではなく、
+        その間に価値を見出せる感覚を持っています。
+      </p>
+
+      <h2>迷いやすさの正体</h2>
+      <p>
+        決断に時間がかかることがあるかもしれません。
+        でもそれは優柔不断ではありません。
+      </p>
+      <p>
+        あなたは、一度選んだら簡単には戻れないと知っているからこそ、
+        慎重になるのです。
+      </p>
+
+      <h2>四柱推命的なまとめ</h2>
+      <p>
+        あなたは派手に前へ出るよりも、
+        自分の立ち位置を確かめながら進む人。
+        その歩みは、確かな道として残ります。
+      </p>
+    </div>
+  </div>
+</main>
+
+<script>
+function showResult() {
+  document.getElementById("input-area").style.display = "none";
+  document.getElementById("result-area").style.display = "block";
+}
+function openTab(tab) {
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelectorAll(".content").forEach(c => c.classList.remove("active"));
+  document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add("active");
+  document.getElementById(tab).classList.add("active");
+}
+</script>
+
+</body>
+</html>
