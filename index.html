@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>統合占い</title>
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  background:#f7f7f7;
+  color:#222;
+  margin:0;
+}
+header {
+  background:#111;
+  color:#fff;
+  padding:16px;
+  text-align:center;
+}
+main {
+  max-width:760px;
+  margin:auto;
+  padding:20px;
+}
+input, button {
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  font-size:16px;
+}
+button {
+  background:#111;
+  color:#fff;
+  border:none;
+}
+.tabs {
+  display:flex;
+  gap:8px;
+  border-bottom:1px solid #ccc;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+.tab {
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:14px;
+}
+.tab.active {
+  border-bottom:2px solid #111;
+  font-weight:bold;
+}
+.content {
+  display:none;
+  padding-top:18px;
+  line-height:1.9;
+}
+.content.active { display:block; }
+h2 { font-size:18px; margin-top:26px; }
+h3 { font-size:16px; margin-top:18px; }
+.note {
+  font-size:14px;
+  color:#555;
+}
+.box {
+  background:#fafafa;
+  border-left:3px solid #ddd;
+  padding:12px;
+  margin:14px 0;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+<header>
+<h1>統合占い</h1>
+</header>
+
+<main>
+<div id="input-area">
+  <input type="text" placeholder="姓">
+  <input type="text" placeholder="名">
+  <input type="date">
+  <button onclick="showResult()">占う</button>
+  <p class="note">※ 未来を断定せず、今のあなたの構造を読み解きます</p>
+</div>
+
+<div id="result-area" style="display:none;">
+  <div class="tabs">
+    <div class="tab active" onclick="openTab('general')">総合</div>
+    <div class="tab" onclick="openTab('shichu')">四柱推命</div>
+    <div class="tab" onclick="openTab('numerology')">数秘術</div>
+  </div>
+
+<!-- 総合 -->
+<div id="general" class="content active">
+<h2>あなたという人の全体像</h2>
+<p>
+あなたは、状況に応じて自分の出方を自然に変えられる人です。
+一貫性がないように見えることもありますが、
+実際は「何を大切にするか」という軸はずっと変わっていません。
+</p>
+
+<h3>表に出やすい顔</h3>
+<p>
+周囲からは、落ち着いていて話しやすく、
+感情の起伏が少ない人に見られやすいでしょう。
+その場の空気を読み、角が立たない選択を自然に選びます。
+</p>
+
+<h3>内側にある顔</h3>
+<p>
+一方で内面では、物事をかなり深く考えています。
+「本当にそれでいいのか」「後悔しないか」を
+自分なりに何度も確認してから動く傾向があります。
+</p>
+
+<div class="box">
+表と裏の差は、あなたの誠実さの表れ。
+軽く扱えないものを、きちんと大事にしている証です。
+</div>
+
+<h2>人生のテーマ</h2>
+<p>
+あなたの人生は、極端に振り切るよりも
+「複数の視点を同時に持つこと」がテーマになりやすいでしょう。
+迷いは弱さではなく、視野の広さから生まれています。
+</p>
+</div>
+
+<!-- 四柱推命 -->
+<div id="shichu" class="content">
+<h2>四柱推命から見る性質の骨格</h2>
+<p>
+四柱推命で見るあなたは、
+内側に確かな熱を持ちながら、
+それを外に強く出しすぎない構造をしています。
+</p>
+
+<h3>表に現れやすい性質</h3>
+<p>
+慎重で、感情をコントロールできる人。
+安定感があり、信頼されやすいタイプです。
+周囲からは「大人」「冷静」と評価されることが多いでしょう。
+</p>
+
+<h3>裏側で動いている本音</h3>
+<p>
+実際には、感情がないわけではありません。
+むしろ一度動くと深く、簡単には切り替えられない面があります。
+だからこそ、最初から慎重になるのです。
+</p>
+
+<div class="box">
+勢いで進まないのは、
+感情を粗末にしたくないから。
+それは四柱的には「成熟した使い方」です。
+</div>
+
+<h2>迷いの正体</h2>
+<p>
+あなたの迷いは、優柔不断ではありません。
+選んだ先まで想像できてしまうため、
+軽い決断ができないだけです。
+</p>
+</div>
+
+<!-- 数秘術 -->
+<div id="numerology" class="content">
+<h2>数秘術から見る思考と行動</h2>
+<p>
+数秘術的に見ると、あなたは
+「納得してから動く」思考回路を持っています。
+即断即決より、理解と整理を優先するタイプです。
+</p>
+
+<h3>表に出る思考パターン</h3>
+<p>
+理性的で落ち着いた判断をする人。
+一見すると感情より理屈を重視しているように見えます。
+</p>
+
+<h3>内側にある思考の癖</h3>
+<p>
+実はかなり感覚的で、
+「しっくりくるかどうか」を大切にしています。
+その感覚を言語化するまで時間がかかるだけなのです。
+</p>
+
+<div class="box">
+考えすぎではありません。
+感覚を雑に扱わない、あなたなりの慎重さです。
+</div>
+
+<h2>数秘術的まとめ</h2>
+<p>
+あなたは、考えることで自分を守り、
+納得することで前に進む人。
+その順序があるからこそ、
+無理のない選択を重ねてこられました。
+</p>
+</div>
+
+</div>
+</main>
+
+<script>
+function showResult(){
+ document.getElementById("input-area").style.display="none";
+ document.getElementById("result-area").style.display="block";
+}
+function openTab(tab){
+ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+ document.querySelectorAll(".content").forEach(c=>c.classList.remove("active"));
+ document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add("active");
+ document.getElementById(tab).classList.add("active");
+}
+</script>
+</body>
+</html>
