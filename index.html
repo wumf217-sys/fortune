@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>統合占い</title>
+<style>
+body {
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+  background:#f7f7f7;
+  color:#222;
+  margin:0;
+}
+header {
+  background:#111;
+  color:#fff;
+  padding:16px;
+  text-align:center;
+}
+main {
+  max-width:760px;
+  margin:auto;
+  padding:20px;
+}
+input,button {
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  font-size:16px;
+}
+button {
+  background:#111;
+  color:#fff;
+  border:none;
+}
+.tabs {
+  display:flex;
+  gap:8px;
+  border-bottom:1px solid #ccc;
+  margin-top:20px;
+  flex-wrap:wrap;
+}
+.tab {
+  padding:10px 14px;
+  cursor:pointer;
+  font-size:14px;
+}
+.tab.active {
+  border-bottom:2px solid #111;
+  font-weight:bold;
+}
+.content {
+  display:none;
+  padding-top:18px;
+  line-height:2.0;
+}
+.content.active { display:block; }
+h2 { font-size:18px; margin-top:28px; }
+.note { font-size:14px; color:#555; }
+.box {
+  background:#fafafa;
+  border-left:3px solid #ddd;
+  padding:16px;
+  margin:22px 0;
+  font-size:14px;
+}
+.closing {
+  margin-top:32px;
+  padding-top:20px;
+  border-top:1px solid #e0e0e0;
+  font-size:15px;
+  line-height:1.9;
+  color:#222;
+}
+</style>
+</head>
+
+<body>
+<header><h1>統合占い</h1></header>
+
+<main>
+<div id="input-area">
+  <input type="text" placeholder="姓">
+  <input type="text" placeholder="名">
+  <input type="date">
+  <button onclick="showResult()">占う</button>
+  <p class="note">※ 未来を断定せず、あなたの「今の在り方」を読み解きます</p>
+</div>
+
+<div id="result-area" style="display:none;">
+  <div class="tabs">
+    <div class="tab active" onclick="openTab('general')">総合</div>
+    <div class="tab" onclick="openTab('shichu')">四柱推命</div>
+    <div class="tab" onclick="openTab('numerology')">数秘術</div>
+  </div>
+
+<!-- 総合 -->
+<div id="general" class="content active">
+<h2>あなたという人の在り方</h2>
+
+<p>
+あなたは、人から見ると穏やかで、
+感情に振り回されない人に映りやすいでしょう。
+その印象は間違いではありません。
+ただ、それは感情が薄いからではなく、
+一度内側で受け止め、整理してから外に出しているからです。
+</p>
+
+<p>
+表向きは「大丈夫そう」に見えても、
+内側では小さな違和感や引っかかりを
+丁寧に拾い集めています。
+その違和感を無視しないからこそ、
+あなたの判断には一貫した重みが生まれます。
+</p>
+
+<div class="box">
+流されていないのに、逆らっているわけでもない。
+その絶妙な位置取りが、
+あなたの人間関係や選択を支えてきました。
+</div>
+
+<p>
+迷うことが多かったとしても、
+それは決断力がないからではありません。
+選択肢の「良い面」だけでなく、
+その先に起こりうる現実まで
+自然と想像してしまうからです。
+</p>
+
+<p>
+だからあなたは、勢いで選ぶよりも、
+「後から自分がどう感じるか」を
+大切にしてきました。
+その姿勢は派手ではありませんが、
+時間が経つほど、静かな納得として残ります。
+</p>
+
+<h2>総合的なテーマ</h2>
+<p>
+あなたの人生は、
+一つの答えに飛びつくよりも、
+複数の視点を抱えたまま進むことに意味があります。
+白黒を急がず、揺れを許しながら考え続ける力。
+それは、あなたの中に自然と備わっている資質です。
+</p>
+
+<!-- 締めメッセージ -->
+<div class="closing">
+<p>
+ここまで読んで感じたことが、
+すぐに言葉にならなくても大丈夫です。
+占いは答えを渡すものではなく、
+あなたの中にすでにある感覚を、
+少しだけ照らすものだから。
+</p>
+
+<p>
+これから数秘や西洋占星術、姓名といった視点を重ねていくと、
+同じあなたが、また違う輪郭で見えてくるでしょう。
+けれど、どの角度から見ても、
+中心にある「あなたらしさ」は変わりません。
+</p>
+
+<p>
+今のあなたが感じていること、
+立ち止まりながら選んできたこと、
+その一つひとつが、すでに人生の一部です。
+無理にまとめなくても、
+このページを閉じたあとも、
+その感覚はちゃんと続いていきます。
+</p>
+</div>
+
+</div>
+
+<!-- 四柱推命 -->
+<div id="shichu" class="content">
+<h2>四柱推命から見る性質の深層</h2>
+
+<p>
+四柱推命で見るあなたは、
+内側に確かな熱量を持ちながら、
+それを無闇に外へ放出しない構造をしています。
+そのため、周囲からは
+「落ち着いている」「安定している」
+と受け取られやすいでしょう。
+</p>
+
+<p>
+しかしそれは、感情が動いていないという意味ではありません。
+むしろ一度動いた感情は深く、
+簡単には切り替えられない傾向があります。
+その自覚があるからこそ、
+最初から慎重になるのです。
+</p>
+
+<div class="box">
+勢いで進まないのは、
+感情を雑に扱いたくないから。
+四柱的には、それは未熟さではなく成熟です。
+</div>
+
+<p>
+あなたが迷うとき、
+それは「選べない」のではなく、
+「選んだ後の責任まで見えている」状態です。
+先を想像できてしまう分、
+決断には時間がかかります。
+</p>
+
+<p>
+ただ、その時間は無駄ではありません。
+四柱推命的に見ると、
+あなたは理解と納得を重ねることで、
+後悔の少ない選択を積み上げてきた人です。
+</p>
+
+<p>
+急がなかったからこそ、
+途中で自分を見失わずに済んだ。
+それがあなたの歩みの特徴です。
+</p>
+
+<h2>四柱から見た人生の使い方</h2>
+<p>
+あなたは、速さよりも確かさを選ぶ人。
+誰かの正解に合わせるより、
+自分の感覚に筋が通っているかを
+何度も確かめながら進んできました。
+</p>
+
+<p>
+その姿勢は地味に見えるかもしれません。
+けれど時間が経つほど、
+「自分の人生だった」と
+静かに実感できる形で残っていきます。
+</p>
+</div>
+
+<!-- 数秘（補足） -->
+<div id="numerology" class="content">
+<h2>数秘術から見る補足</h2>
+<p>
+あなたは納得してから動く思考タイプ。
+考える時間は、
+自分を守るための大切な工程です。
+</p>
+</div>
+
+</div>
+</main>
+
+<script>
+function showResult(){
+ document.getElementById("input-area").style.display="none";
+ document.getElementById("result-area").style.display="block";
+}
+function openTab(tab){
+ document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+ document.querySelectorAll(".content").forEach(c=>c.classList.remove("active"));
+ document.querySelector(`[onclick="openTab('${tab}')"]`).classList.add("active");
+ document.getElementById(tab).classList.add("active");
+}
+</script>
+</body>
+</html>
