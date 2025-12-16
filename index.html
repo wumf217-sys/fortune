@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>統合占い｜8</title>
+<style>
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+  background:#0f1220;color:#fff;margin:0;padding:14px
+}
+h1{text-align:center;font-size:20px}
+label{display:block;margin-top:10px}
+input,button{
+  width:100%;padding:10px;margin-top:6px;font-size:16px;
+  border-radius:8px;border:none
+}
+input{background:#0f1220;color:#fff;border:1px solid #333}
+button{margin-top:16px;background:#6c7cff;color:#fff;font-size:18px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:16px 0}
+.tab{
+  padding:8px 14px;border-radius:20px;
+  background:#24285a;white-space:nowrap;font-size:14px
+}
+.tab.active{background:#6c7cff}
+.section{
+  display:none;background:#1b1f3a;
+  padding:14px;border-radius:12px
+}
+.section.active{display:block}
+.section h2{
+  font-size:17px;border-bottom:1px solid #444;
+  padding-bottom:6px;margin-top:0
+}
+.section p{line-height:2.0;margin:12px 0}
+.small{opacity:.8;font-size:13px}
+</style>
+</head>
+
+<body>
+
+<h1>統合占い</h1>
+
+<label>姓<input id="sei"></label>
+<label>名<input id="mei"></label>
+<label>生年月日<input type="date" id="birth"></label>
+
+<button onclick="uranau()">占う</button>
+
+<div class="tabs" id="tabs" style="display:none"></div>
+<div id="sections"></div>
+
+<script>
+const tabsOrder=["総合","西洋"];
+
+function typeOf(d){
+ const n=d.replaceAll("-","").split("").reduce((a,b)=>a+Number(b),0)%5;
+ return ["A","B","C","D","E"][n];
+}
+
+const TYPE={
+A:"感覚・直感",
+B:"思考・構造",
+C:"統合・俯瞰",
+D:"実行・現実",
+E:"内省・探求"
+};
+
+function pick(arr){
+ return arr[Math.floor(Math.random()*arr.length)];
+}
+
+const TEXT={
+総合:{
+A:[
+`今のあなたは、自分でも気づかないうちに「流れを読む」意識が強くなっています。
+無理に前へ進むより、状況を整えようとする感覚が働いている時です。`,
+`表では落ち着いて見られやすい一方、内側では何度も自分に問いを投げています。
+この表裏の差は、あなたの弱さではありません。`,
+`人との関係では、近づきすぎず離れすぎない距離感が重要です。
+理解されることより、理解しようとする姿勢が縁を育てます。`,
+`お金に関しては、増やすより「どう使うか」が運気に影響します。
+納得のいく使い方が、結果的に巡りを安定させます。`,
+`仕事や役割面では、派手さより信頼が評価される時期。
+あなたが自然にこなしていることほど、周囲には価値があります。`
+],
+B:[
+`今のあなたは、全体を安定させる役割を無意識に担っています。
+状況を整理しようとする力が前に出やすい時です。`,
+`外からは冷静に見られやすい反面、内側では思考が止まらない傾向があります。
+考えすぎている自分を責める必要はありません。`,
+`人間関係では、頼られる場面が増えやすいでしょう。
+無理に背負わず、線を引くことも大切です。`,
+`お金については、堅実さが強み。
+一度仕組みを整えることで、不安はかなり減ります。`,
+`仕事では「任される」ことが評価に直結します。
+抱え込みすぎない工夫が鍵です。`
+],
+C:[
+`今は全体を俯瞰する力が強く働いています。
+急いで結論を出さなくてもいい時期です。`,
+`周囲に合わせすぎて、自分の優先度が下がりやすい点には注意。
+それでもあなたの役割は確かに機能しています。`,
+`人との関係では、調整役として信頼されやすいでしょう。`,
+`お金は流れを見る視点が活きます。`,
+`仕事では、今は準備と調整が成果につながります。`
+],
+D:[
+`行動力が前に出やすい時ですが、内側では消耗しやすい状態。
+一度ペースを落とすことで流れが整います。`,
+`人との関係では率直さが誤解を生むことも。
+間を取る意識が助けになります。`,
+`お金は使いどころを選ぶことが重要。`,
+`仕事では突破力が評価されますが、持続性を意識して。`
+],
+E:[
+`内省が深まりやすい時期。
+考えること自体が、次への準備になっています。`,
+`人との距離を取りたくなる感覚は自然なもの。`,
+`お金は安心感を優先した使い方が吉。`,
+`仕事では静かな専門性が活きます。`
+]
+},
+
+西洋:{
+A:[
+`あなたの星は、感情と直感を通して世界を理解する配置。
+共感力が高く、人の変化に敏感です。`,
+`対人関係では、相手の立場を感じ取りすぎる傾向があります。
+境界線を意識することで楽になります。`,
+`金銭面では、心が納得する使い方が運を動かします。`,
+`社会的には、安心感を与える役割を自然と担います。`
+],
+B:[
+`思考を軸に世界を捉える星配置。
+論理と秩序を重んじる傾向があります。`,
+`人間関係では冷静さが信頼につながりますが、
+感情表現を少し足すと距離が縮まります。`,
+`お金は計画性が強み。`,
+`仕事では調整力が評価されます。`
+],
+C:[
+`全体バランスを取る星の配置。
+極端に寄らない安定感があります。`,
+`人との関係では中立的立場になりやすいでしょう。`,
+`お金は流れを見る視点が活きます。`,
+`社会では橋渡し役として力を発揮します。`
+],
+D:[
+`行動と結果に焦点が当たりやすい星。
+前進力があります。`,
+`人間関係では率直さが武器にも摩擦にもなります。`,
+`お金は動かすことで循環します。`,
+`仕事では突破役として期待されます。`
+],
+E:[
+`内面世界を深く掘る星配置。
+洞察力が強いタイプです。`,
+`人との関係では距離感が重要。`,
+`お金は安心を優先する傾向。`,
+`仕事では専門性が評価されます。`
+]
+}
+};
+
+function uranau(){
+ if(!sei.value||!mei.value||!birth.value){
+   alert("すべて入力してください");return;
+ }
+ const t=typeOf(birth.value);
+ const tabs=document.getElementById("tabs");
+ const sec=document.getElementById("sections");
+ tabs.innerHTML="";sec.innerHTML="";
+ tabs.style.display="flex";
+
+ tabsOrder.forEach((k,i)=>{
+  const tb=document.createElement("div");
+  tb.className="tab"+(i===0?" active":"");
+  tb.textContent=k;
+  tb.onclick=()=>selectTab(k);
+  tabs.appendChild(tb);
+
+  const arr=TEXT[k][t];
+  const s=document.createElement("div");
+  s.className="section"+(i===0?" active":"");
+  s.dataset.k=k;
+
+  let html=`<h2>${k}</h2><p class="small">タイプ：${TYPE[t]}</p>`;
+  arr.forEach(p=>{ html+=`<p>${p}</p>`; });
+  s.innerHTML=html;
+  sec.appendChild(s);
+ });
+}
+
+function selectTab(k){
+ document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.textContent===k));
+ document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.dataset.k===k));
+}
+</script>
+
+</body>
+</html>
