@@ -132,7 +132,7 @@ function uranau(){
   s.dataset.k=k;
 
   if(k==="総合"){
-    const d=TEXT.総合[t];
+    const d = TEXT.総合[t] || TEXT.総合["A"];
     s.innerHTML=`
       <h2>総合鑑定</h2>
       <p class="small">タイプ：${TYPE[t]}</p>
@@ -151,7 +151,7 @@ function uranau(){
       <p>${pick(d.end)}</p>
     `;
   } else {
-    const arr=TEXT[k][t];
+    const arr = TEXT[k][t] || TEXT[k]["A"];
     let html=`<h2>${k}</h2><p class="small">タイプ：${TYPE[t]}</p>`;
     arr.forEach(p=>{ html+=`<p>${p}</p>`; });
     s.innerHTML=html;
