@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>統合占い｜8</title>
+<style>
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN",sans-serif;
+  background:#0f1220;color:#fff;margin:0;padding:14px
+}
+h1{text-align:center;font-size:20px}
+label{display:block;margin-top:10px}
+input,button{
+  width:100%;padding:10px;margin-top:6px;font-size:16px;
+  border-radius:8px;border:none
+}
+input{background:#0f1220;color:#fff;border:1px solid #333}
+button{margin-top:16px;background:#6c7cff;color:#fff;font-size:18px}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:16px 0}
+.tab{
+  padding:8px 14px;border-radius:20px;
+  background:#24285a;white-space:nowrap;font-size:14px
+}
+.tab.active{background:#6c7cff}
+.section{
+  display:none;background:#1b1f3a;
+  padding:14px;border-radius:12px
+}
+.section.active{display:block}
+.section h2{
+  font-size:17px;border-bottom:1px solid #444;
+  padding-bottom:6px;margin-top:0
+}
+.section h3{
+  font-size:15px;margin-top:22px;
+  border-left:4px solid #6c7cff;
+  padding-left:8px
+}
+.section p{line-height:2.0;margin:12px 0}
+.small{opacity:.75;font-size:13px}
+</style>
+</head>
+
+<body>
+
+<h1>統合占い</h1>
+
+<label>姓<input id="sei"></label>
+<label>名<input id="mei"></label>
+<label>生年月日<input type="date" id="birth"></label>
+
+<button onclick="uranau()">占う</button>
+
+<div class="tabs" id="tabs" style="display:none"></div>
+<div id="sections"></div>
+
+<script>
+const tabsOrder=["総合","西洋"];
+
+function typeOf(d){
+ const n=d.replaceAll("-","").split("").reduce((a,b)=>a+Number(b),0)%5;
+ return ["A","B","C","D","E"][n];
+}
+
+const TYPE={
+A:"感覚・直感",
+B:"思考・構造",
+C:"統合・俯瞰",
+D:"実行・現実",
+E:"内省・探求"
+};
+
+function pick(arr){
+ return arr[Math.floor(Math.random()*arr.length)];
+}
+
+const TEXT={
+総合:{
+A:{
+core:["あなたの本質は、言葉になる前の違和感や空気を正確に捉える感覚にあります。"],
+front:["表では柔らかく、相手に合わせられる人に見られやすいでしょう。"],
+back:["裏では非常にシビアで、自分の感覚がズレていないかを何度も確認しています。"],
+value:["無意識に大切にしているのは『自然さ』。無理がある状態をすぐ察知します。"],
+pitfall:["周囲を優先しすぎると、自分の感覚を後回しにしてしまいます。"],
+pattern:["整える役に回り、自分の番が後になる流れを繰り返しがちです。"],
+destiny:[
+"あなたの宿命は『流れを読む感覚を持って生まれた人』です。",
+"理屈よりも先に、合う・合わないを感じ取る設計で生まれています。",
+"型に当てはめられると調子を崩し、自然なリズムに戻ると力を発揮します。",
+"これは甘えではなく、生まれ持った性質です。"
+],
+theme:["人生のテーマは『歪みを正すこと』。"],
+end:["あなたの感覚は、世界を静かに整えています。"]
+},
+B:{
+core:["あなたの本質は、物事を構造として理解し、形にする力です。"],
+front:["表では理性的で落ち着いた人に見られます。"],
+back:["裏では準備不足を自分に許さない厳しさがあります。"],
+value:["無意識に大切にしているのは『筋が通っていること』。"],
+pitfall:["考えすぎて動きが遅くなることがあります。"],
+pattern:["整ってから動こうとして、機会を見送る流れを経験しがちです。"],
+destiny:[
+"あなたの宿命は『仕組みを作るために生まれた人』です。",
+"混乱を放置せず、整理し形にする役割を持っています。",
+"曖昧な状況ほどストレスを感じやすいのも、設計者の気質です。"
+],
+theme:["人生のテーマは『組み立てること』。"],
+end:["あなたの思考は、安心と安定を生み出します。"]
+},
+C:{
+core:["あなたの本質は、全体を俯瞰し調和点を見つける力です。"],
+front:["表では穏やかで相談されやすいでしょう。"],
+back:["裏では自分の感情を後回しにしがちです。"],
+value:["無意識に大切にしているのは『バランス』。"],
+pitfall:["自分の本音が分からなくなることがあります。"],
+pattern:["調整役に回り続ける流れを繰り返します。"],
+destiny:[
+"あなたの宿命は『極端を中和する存在』です。",
+"どちらか一方に寄りすぎた時、自然と呼ばれる位置にいます。",
+"目立たなくても、欠かせない役割です。"
+],
+theme:["人生のテーマは『つなぐこと』。"],
+end:["あなたがいることで、流れは整います。"]
+},
+D:{
+core:["あなたの本質は、現実を動かす行動力です。"],
+front:["表では頼もしく決断力がある人に見られます。"],
+back:["裏では迷いを見せずに抱え込みます。"],
+value:["無意識に大切にしているのは『結果』。"],
+pitfall:["勢いで進みすぎることがあります。"],
+pattern:["動いてから調整する流れを繰り返します。"],
+destiny:[
+"あなたの宿命は『停滞を動かす人』です。",
+"考えるより先に動ける設計で生まれています。",
+"止まった場に刺激を与える役目です。"
+],
+theme:["人生のテーマは『突破』。"],
+end:["あなたの一歩が、現実を変えます。"]
+},
+E:{
+core:["あなたの本質は、内面を深く掘り下げる探究力です。"],
+front:["表では静かで控えめに見られます。"],
+back:["裏では思考が止まらず問い続けています。"],
+value:["無意識に大切にしているのは『意味』。"],
+pitfall:["考えすぎて孤立感を覚えることがあります。"],
+pattern:["深く考えすぎて動きが遅れる流れです。"],
+destiny:[
+"あなたの宿命は『本質を見抜く人』です。",
+"表面ではなく意味を見るため、時間が必要です。",
+"深さそのものが、あなたの価値です。"
+],
+theme:["人生のテーマは『深めること』。"],
+end:["あなたの探究は、確かな道を照らします。"]
+}
+},
+西洋:{
+A:["あなたの星は直感と感情の連動を示しています。"]
+}
+};
+
+function uranau(){
+ if(!sei.value||!mei.value||!birth.value){
+   alert("すべて入力してください");return;
+ }
+ const t=typeOf(birth.value);
+ const tabs=document.getElementById("tabs");
+ const sec=document.getElementById("sections");
+ tabs.innerHTML="";sec.innerHTML="";
+ tabs.style.display="flex";
+
+ tabsOrder.forEach((k,i)=>{
+  const tb=document.createElement("div");
+  tb.className="tab"+(i===0?" active":"");
+  tb.textContent=k;
+  tb.onclick=()=>selectTab(k);
+  tabs.appendChild(tb);
+
+  const s=document.createElement("div");
+  s.className="section"+(i===0?" active":"");
+  s.dataset.k=k;
+
+  if(k==="総合"){
+    const d=TEXT.総合[t] || TEXT.総合["A"];
+    s.innerHTML=`
+      <h2>あなたはこういう人</h2>
+      <p class="small">タイプ：${TYPE[t]}</p>
+
+      <h3>本質（核）</h3><p>${pick(d.core)}</p>
+      <h3>表に出やすい顔</h3><p>${pick(d.front)}</p>
+      <h3>裏に隠れている顔</h3><p>${pick(d.back)}</p>
+      <h3>無意識の価値観</h3><p>${pick(d.value)}</p>
+      <h3>つまずきやすいポイント</h3><p>${pick(d.pitfall)}</p>
+      <h3>繰り返しやすい人生パターン</h3><p>${pick(d.pattern)}</p>
+
+      <h3>宿命（四柱推命から見るあなた）</h3>
+      ${d.destiny.map(v=>`<p>${v}</p>`).join("")}
+
+      <h3>人生のテーマ</h3><p>${pick(d.theme)}</p>
+      <p>${pick(d.end)}</p>
+    `;
+  } else {
+    const arr=TEXT[k][t] || TEXT[k]["A"];
+    let html=`<h2>${k}</h2><p class="small">タイプ：${TYPE[t]}</p>`;
+    arr.forEach(p=>{ html+=`<p>${p}</p>`; });
+    s.innerHTML=html;
+  }
+  sec.appendChild(s);
+ });
+}
+
+function selectTab(k){
+ document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.textContent===k));
+ document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.dataset.k===k));
+}
+</script>
+
+</body>
+</html>
