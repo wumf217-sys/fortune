@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>あなたを読み解く占い</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      line-height: 2;
+      margin: 0;
+    }
+    header {
+      padding: 24px;
+      text-align: center;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      font-size: 16px;
+    }
+    button {
+      background: #222;
+      color: #fff;
+      border: none;
+      margin-top: 24px;
+    }
+    .tabs {
+      display: flex;
+      margin-top: 32px;
+      border-bottom: 1px solid #ccc;
+    }
+    .tab {
+      padding: 12px 16px;
+      cursor: pointer;
+    }
+    .tab.active {
+      border-bottom: 2px solid #222;
+      font-weight: bold;
+    }
+    .content {
+      display: none;
+      margin-top: 24px;
+    }
+    .content.active {
+      display: block;
+    }
+    .section {
+      margin-bottom: 48px;
+    }
+    h3 {
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>あなたを読み解く占い</h1>
+</header>
+
+<main id="inputArea">
+  <p>
+    この占いは、未来を決めるためのものではありません。  
+    いまのあなたが、どんな性質と一緒に生きているのかを  
+    静かに読み解いていきます。
+  </p>
+
+  <input id="sei" placeholder="姓">
+  <input id="mei" placeholder="名">
+  <input id="birth" type="date">
+  <select id="gender">
+    <option value="">性別</option>
+    <option>男性</option>
+    <option>女性</option>
+    <option>その他</option>
+  </select>
+
+  <button onclick="uranau()">占う</button>
+</main>
+
+<main id="resultArea" style="display:none;">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('general')">総合</div>
+    <div class="tab" onclick="showTab('shichu')">四柱推命</div>
+  </div>
+
+  <!-- 総合（前回のまま） -->
+  <div id="general" class="content active">
+
+    <div class="section" id="branchMessage"></div>
+
+    <div class="section">
+      <p>
+        あなたは、自分が思っている以上に  
+        多くの視点を同時に持てる人です。
+      </p>
+      <p>
+        一つの答えに強く寄りかかるよりも、  
+        「本当にそれだけだろうか」と  
+        立ち止まって考えることが自然にできます。
+      </p>
+    </div>
+
+    <div class="section">
+      <p>
+        周囲からは落ち着いて見られても、  
+        内側では考え続けていることが多いでしょう。
+      </p>
+      <p>
+        そのズレは弱さではなく、  
+        世界を単純にしすぎない感覚です。
+      </p>
+    </div>
+
+    <div class="section">
+      <p>
+        この占いは答えを押しつけるものではありません。  
+        今の自分を言葉にするための  
+        ひとつの視点として置いてあります。
+      </p>
+    </div>
+
+  </div>
+
+  <!-- 四柱推命 -->
+  <div id="shichu" class="content">
+
+    <div class="section">
+      <h3>第一章｜あなたの核（動かしにくい性質）</h3>
+      <p>
+        四柱推命の視点で見ると、  
+        あなたの中心には「自分なりの基準」があります。
+      </p>
+      <p>
+        それは強く主張するものではなく、  
+        むしろ静かに、でも確実に存在しています。
+      </p>
+      <p>
+        気づかないうちに、  
+        その基準を外れた選択肢を  
+        避けていることもあるかもしれません。
+      </p>
+    </div>
+
+    <div class="section">
+      <h3>第二章｜表に出やすい顔</h3>
+      <p>
+        あなたは周囲から、  
+        落ち着いていて、状況を見ている人として  
+        受け取られやすいでしょう。
+      </p>
+      <p>
+        先に前へ出るよりも、  
+        流れを確認してから動く。
+      </p>
+      <p>
+        その姿勢が、  
+        信頼や安心感につながる場面も多いはずです。
+      </p>
+    </div>
+
+    <div class="section">
+      <h3>第三章｜裏で抱えやすいもの</h3>
+      <p>
+        その一方で、  
+        自分の内側では迷いが長く続くことも。
+      </p>
+      <p>
+        「本当にこれでいいのか」  
+        「他の可能性はないだろうか」
+      </p>
+      <p>
+        そうした問いを、  
+        人に見せずに抱え込んでしまいやすい傾向があります。
+      </p>
+    </div>
+
+    <div class="section">
+      <h3>第四章｜揺らぎと、その扱い方</h3>
+      <p>
+        表に出る落ち着きと、  
+        内側の迷いがぶつかると、  
+        動けなくなったように感じることがあります。
+      </p>
+      <p>
+        けれどそれは、  
+        止まっているのではなく、  
+        内部で調整が起きている状態です。
+      </p>
+      <p>
+        無理に結論を出そうとしないことが、  
+        あなたにとっては一番自然な進み方です。
+      </p>
+    </div>
+
+    <div class="section">
+      <h3>第五章｜四柱推命からのまとめ</h3>
+      <p>
+        四柱推命が示しているのは、  
+        あなたが「一つに決めない」力を  
+        持っているということ。
+      </p>
+      <p>
+        表と裏、  
+        迷いと確信、  
+        そのどちらも抱えたまま進める人です。
+      </p>
+      <p>
+        自分を単純に説明しなくてもいい。  
+        その複雑さごと、  
+        あなたの資質です。
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<script>
+function uranau() {
+  const birth = document.getElementById("birth").value;
+  if (!birth) return alert("生年月日を入力してください");
+
+  const d = new Date(birth);
+  const day = d.getDate();
+  const month = d.getMonth() + 1;
+
+  let message = "";
+
+  if (month <= 6 && day % 2 === 0) {
+    message = "いまのあなたは、答えを急がなくていい場所にいます。";
+  } else if (month <= 6) {
+    message = "内側では、静かに準備が進んでいるようです。";
+  } else if (day % 2 === 0) {
+    message = "人との関係性の中で、立ち位置を整えている時期です。";
+  } else {
+    message = "流れが少しずつ動き出しているのを感じているかもしれません。";
+  }
+
+  document.getElementById("branchMessage").innerHTML =
+    "<p><strong>" + message + "</strong></p>";
+
+  document.getElementById("inputArea").style.display = "none";
+  document.getElementById("resultArea").style.display = "block";
+}
+
+function showTab(tab) {
+  document.querySelectorAll(".content").forEach(c => c.classList.remove("active"));
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+
+  document.getElementById(tab).classList.add("active");
+  event.target.classList.add("active");
+}
+</script>
+
+</body>
+</html>
