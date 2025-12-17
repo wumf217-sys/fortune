@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>統合占い</title>
+
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+  background: #f6f6f6;
+  margin: 0;
+  padding: 0;
+}
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 20px;
+}
+h1, h2 {
+  text-align: center;
+}
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  font-size: 16px;
+}
+button {
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+}
+.tab-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+.tab-buttons button {
+  flex: 1;
+  margin: 0 4px;
+  background: #ddd;
+  color: #000;
+}
+.tab-buttons button.active {
+  background: #222;
+  color: #fff;
+}
+.tab {
+  display: none;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  line-height: 1.8;
+}
+.box {
+  background: #f0f0f0;
+  padding: 15px;
+  border-left: 4px solid #999;
+  margin: 20px 0;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<!-- 入力画面 -->
+<div id="formSection">
+  <h1>統合占い</h1>
+  <input type="text" placeholder="姓" />
+  <input type="text" placeholder="名" />
+  <input type="date" />
+  <button onclick="showResult()">占う</button>
+</div>
+
+<!-- 結果画面 -->
+<div id="resultSection" style="display:none;">
+  <h1>鑑定結果</h1>
+
+  <div class="tab-buttons">
+    <button class="active" onclick="openTab('total', this)">総合</button>
+    <button onclick="openTab('four', this)">四柱推命</button>
+    <button onclick="openTab('others', this)">補足</button>
+  </div>
+
+  <!-- 総合 -->
+  <div id="total" class="tab" style="display:block;">
+    <h2>あなたという人の在り方</h2>
+
+    <p>
+    あなたは、一見すると落ち着いていて、感情に振り回されない人に見られやすいでしょう。
+    それは感情が薄いからではなく、外に出す前に一度、自分の中で受け止めているからです。
+    </p>
+
+    <p>
+    表向きは穏やかでも、内側では多くのことを考えています。
+    小さな違和感や引っかかりを見逃さず、それを整理してから行動に移す。
+    その姿勢が、あなたの判断に静かな説得力を与えています。
+    </p>
+
+    <div class="box">
+    流されていないのに、逆らっているわけでもない。  
+    その絶妙な立ち位置が、あなたらしさです。
+    </div>
+
+    <p>
+    あなたは、すぐに答えを出すタイプではありません。
+    けれどそれは優柔不断ではなく、「この選択の先にある現実」まで
+    自然と想像してしまう思考の深さから来ています。
+    </p>
+
+    <p>
+    だからこそ、一度腑に落ちた選択は揺らぎにくく、
+    周囲から見ると「いつの間にか決めていた」ように映ることもあるでしょう。
+    </p>
+
+    <h2>総合的なテーマ</h2>
+    <p>
+    あなたの人生は、答えを急ぐよりも、
+    揺れながら考え続けることで形づくられていきます。
+    白黒を急がない姿勢そのものが、あなたの強さです。
+    </p>
+  </div>
+
+  <!-- 四柱推命 -->
+  <div id="four" class="tab">
+    <h2>四柱推命から見る本質</h2>
+
+    <p>
+    あなたの本質は、表に出る部分よりも内側に厚みがあります。
+    周囲に合わせられる柔軟さを持ちながら、
+    核となる価値観は簡単には揺らぎません。
+    </p>
+
+    <p>
+    強く主張するよりも、自然な形で周囲に影響を与えるタイプです。
+    無理に前に出なくても、気づけば中心にいる。
+    そんな在り方が、あなたの宿命的な特徴と言えるでしょう。
+    </p>
+
+    <div class="box">
+    四柱推命的に見ると、あなたは  
+    「内側で熟成してから外に出す」流れを持っています。
+    </div>
+
+    <p>
+    だからこそ、時間をかけて育てた考えや想いは、
+    簡単には色褪せません。
+    </p>
+  </div>
+
+  <!-- 補足 -->
+  <div id="others" class="tab">
+    <h2>補足的な視点</h2>
+    <p>
+    数秘や西洋占星術の視点では、
+    あなたは人との関わりの中で
+    自分の役割を自然と引き受けやすい傾向があります。
+    </p>
+    <p>
+    それは背負いすぎる必要があるという意味ではなく、
+    「気づいたらそこに立っていた」位置が、
+    あなたにとって無理のない場所であることを示しています。
+    </p>
+  </div>
+
+</div>
+</div>
+
+<script>
+function showResult() {
+  document.getElementById("formSection").style.display = "none";
+  document.getElementById("resultSection").style.display = "block";
+}
+
+function openTab(tabId, btn) {
+  const tabs = document.querySelectorAll(".tab");
+  tabs.forEach(t => t.style.display = "none");
+  document.getElementById(tabId).style.display = "block";
+
+  const buttons = document.querySelectorAll(".tab-buttons button");
+  buttons.forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+</script>
+
+</body>
+</html>
