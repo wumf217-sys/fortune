@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>8 - あなたを読み解く占い</title>
+
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background:#0f0f14;
+  color:#f4f4f4;
+  margin:0;
+  padding:18px;
+  line-height:1.9;
+}
+h1{
+  font-size:20px;
+  text-align:center;
+  margin-bottom:14px;
+}
+.tabbar{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  margin:8px 0 14px;
+}
+.tabbar button{
+  flex:1;
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid #444;
+  background:#1b1b24;
+  color:#fff;
+}
+.tabbar button.active{
+  background:#3b3bff;
+}
+.section{
+  display:none;
+}
+.section.active{
+  display:block;
+}
+footer{
+  margin-top:28px;
+  opacity:.7;
+  font-size:13px;
+  text-align:center;
+}
+</style>
+
+<script>
+function showTab(id){
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".tabbar button").forEach(b=>b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  document.getElementById("btn-"+id).classList.add("active");
+}
+</script>
+</head>
+
+<body>
+
+<h1>【総合】</h1>
+
+<div class="tabbar">
+  <button id="btn-core" class="active" onclick="showTab('core')">あなたの核</button>
+  <button id="btn-frontback" onclick="showTab('frontback')">表と裏</button>
+  <button id="btn-flow" onclick="showTab('flow')">運気の流れ</button>
+  <button id="btn-talent" onclick="showTab('talent')">8つの才能</button>
+  <button id="btn-mission" onclick="showTab('mission')">使命・課題</button>
+  <button id="btn-summary" onclick="showTab('summary')">人生テーマ</button>
+</div>
+
+<div id="core" class="section active">
+<p>
+あなたは今、「正解を知りたい」というよりも、<br>
+自分のこれまでの歩き方・選び方・感じ方を、もう一度ゆっくり見直そうとしている地点に立っています。<br><br>
+これは「迷っているから」ではなく、<br>
+ここから先を進むために、一度ふと立ち止まって「内側の重心」を確かめ直そうとしている合図でもあります。
+</p>
+</div>
+
+<div id="frontback" class="section">
+<p>
+【表】のあなたは…<br>
+【裏】のあなたは…<br>
+（※ここに後で厚みある本文を追加していく）
+</p>
+</div>
+
+<div id="flow" class="section">
+<p>
+これまで → 今 → これから の流れの中で、あなたの歩き方には一定のリズムがあります。<br>
+（ここに運気の流れの文章が入る）
+</p>
+</div>
+
+<div id="talent" class="section">
+<p>
+あなたには本来、8つすべての才能が備わっています。<br>
+（ここに才能群テキストが入る）
+</p>
+</div>
+
+<div id="mission" class="section">
+<p>
+使命・課題の文章（後で長編化していく）
+</p>
+</div>
+
+<div id="summary" class="section">
+<p>
+最後にもう一度、視点を落ち着かせて —<br>
+ここから先の一歩を、あなた自身の手で選んでいくための「人生テーマ」。
+</p>
+</div>
+
+<footer>© Eight Project</footer>
+
+</body>
+</html>
