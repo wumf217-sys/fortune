@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>8 - Inner Orbit</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue","Hiragino Sans",Arial,sans-serif;line-height:1.9;margin:0;background:#0b0b0d;color:#f4f4f4}
+header{padding:18px 16px;font-size:18px;font-weight:600;text-align:center;border-bottom:1px solid #222}
+.container{padding:16px;max-width:960px;margin:0 auto}
+input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #333;background:#111;color:#fff;margin-bottom:12px}
+button{width:100%;padding:12px;border-radius:999px;font-size:15px;border:0;background:#6f6cff;color:white;margin-top:6px}
+button:active{opacity:.75}
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid #222}
+.tab{padding:10px 14px;white-space:nowrap;cursor:pointer;border-bottom:2px solid transparent;font-size:13px}
+.tab.active{border-bottom:2px solid #6f6cff;color:#bdbbff}
+.section{display:none;padding-top:10px}
+.section.active{display:block}
+.card{background:#111015;border:1px solid #1d1d24;border-radius:16px;padding:14px 14px 12px;margin-bottom:12px}
+h2{font-size:16px;margin:0 0 6px}
+h3{font-size:15px;margin:6px 0 4px;color:#cfcfff}
+.small{opacity:.7;font-size:12px}
+.hr{height:1px;background:#1f1f26;margin:12px 0}
+.highlight{color:#a9a7ff}
+footer{padding:18px;text-align:center;opacity:.65;font-size:11px}
+</style>
+</head>
+
+<body>
+<header>8 — inner spiral reading</header>
+
+<div class="container" id="formArea">
+<div class="card">
+<h2>生年月日と名前を入力してください</h2>
+<p class="small">※ 内容は端末内のみ処理・送信されません</p>
+<input id="name" placeholder="名前（任意）">
+<input id="birth" type="date">
+<select id="gender">
+<option value="">性別（任意）</option>
+<option value="f">女性</option>
+<option value="m">男性</option>
+<option value="n">どれでもない／回答しない</option>
+</select>
+<button onclick="start()">占う</button>
+</div>
+</div>
+
+<div class="container" id="resultArea" style="display:none">
+<div class="tabs" id="tabs"></div>
+<div id="sections"></div>
+</div>
+
+<footer>prototype | 8 orbit reading</footer>
+
+<script>
+// ---- core (1〜8 + 9統合) ----
+function calcCore(d){
+ if(!d) return 0;
+ let s=d.replace(/-/g,"").split("").map(n=>+n).reduce((a,b)=>a+b,0);
+ while(s>9) s=s.toString().split("").map(n=>+n).reduce((a,b)=>a+b,0);
+ return s===9?9:(s%8||8);
+}
+
+// ---- text blocks ----
+const TEXT={
+intro:(name)=>`
+<div class="card">
+<h2>総合 — いまのあなたを別の角度から読む</h2>
+<p>
+あなたは今、<span class="highlight">「当たるかどうか」よりも、自分を別の角度から見直したい地点</span>に立っています。<br>
+これまでの迷い・選び直し・遠回りは、同じ場所に見えて、実は少しずつ高い地点へと<span class="highlight">螺旋状に登ってきた時間</span>でした。
+</p>
+<p>
+この読みは未来を断定するものではなく、<span class="highlight">いまの心の立ち位置を言葉にする鏡</span>です。<br>
+一周読み終えたあと、最初の一文が少し違って見えたなら——それは、あなたがすでに一段上へ進んだ合図です。
+</p>
+</div>`,
+
+core:(t)=>`
+<div class="card">
+<h2>あなたの核 — 性質・本質・潜在</h2>
+<p>${t.core.long}</p>
+<h3>表に現れる力</h3><p>${t.core.front}</p>
+<h3>裏で揺らぐ力</h3><p>${t.core.back}</p>
+<div class="hr"></div>
+<p class="small">${t.core.tip}</p>
+</div>`,
+
+face:(t)=>`
+<div class="card">
+<h2>表と裏 — 同じ性質の別の顔</h2>
+<p>${t.face.body}</p>
+<h3>表が強いとき</h3><p>${t.face.front}</p>
+<h3>裏へ傾いたとき</h3><p>${t.face.back}</p>
+<div class="hr"></div>
+<p class="small">${t.face.bridge}</p>
+</div>`,
+
+flow:(t)=>`
+<div class="card">
+<h2>運気の流れ — これまで／今／これから</h2>
+<h3>これまで</h3><p>${t.flow.past}</p>
+<h3>今</h3><p>${t.flow.now}</p>
+<h3>これから</h3><p>${t.flow.next}</p>
+<div class="hr"></div>
+<p class="small">${t.flow.tip}</p>
+</div>`,
+
+talents:(t)=>`
+<div class="card">
+<h2>8つの才能 — どれもあなたの中にある力</h2>
+${t.talents.map(x=>`
+<h3>${x.name}</h3>
+<p>${x.long}</p>
+<p class="small">扱い方：${x.tip}</p>
+`).join("")}
+</div>`,
+
+mission:(t)=>`
+<div class="card">
+<h2>人生テーマ — まとめ</h2>
+<p>${t.theme}</p>
+</div>`
+};
+
+// ---- shared flow text ----
+const commonFlow={
+ past:`遠回りや選び直しの中で、強さと弱さの扱い方を学んできました。`,
+ now:`いまは特定の力が少し強く表に出ている「変化の途中」。`,
+ next:`才能を増やすより、使い方を整えるほど次の段へ進みます。`,
+ tip:`立ち止まりは停滞ではなく、言葉になる前の手前にあります。`
+};
+
+// ---- templates by type ----
+function packFor(type){
+const T={
+1:{ // 内省軸
+ core:{long:`「自分の中で納得できる答え」を大切にし、静かに積み上げていく力。`,
+       front:`流されず選べる・深く理解できる。`,
+       back:`抱え込みすぎ・完璧待ちで動けなくなる。`,
+       tip:`結論より「小さく一歩」。動きながら考えるほうが本来の強さが息をします。`},
+ face:{body:`表は落ち着いた理性、裏は自責と慎重さとして現れます。`,
+       front:`判断がぶれない。`,
+       back:`自分だけを責めがち。`,
+       bridge:`正しさより「今の自分にとっての最善」へ視点を一段下ろすと整います。`},
+ flow:commonFlow,
+ talents:[
+  {name:`核を磨く人`,long:`内側に軸を育てる探究の力。`,tip:`一人で完結させすぎない。途中経過を外に出す。`},
+  {name:`つながりを感じる人`,long:`感情を内側で言葉に変える洞察。`,tip:`感じたことを文章に落とすと整う。`},
+  {name:`見極める人`,long:`状況の本質を静かに選り分ける観察の力。`,tip:`可能性を残したまま仮決めで進む。`}
+ ],
+ theme:`「正しさ」ではなく「納得」を軸に、螺旋を一段ずつ登っていく歩み。`
+},
+
+2:{ // 共感軸
+ core:{long:`感情や空気の微細な揺らぎまで受け取る、つながりの知性。`,
+       front:`寄り添える・関係の調律ができる。`,
+       back:`自分が後回し・疲労に気づきにくい。`,
+       tip:`優しさ＝引き受けることではない。境界を引くほど本質の温度が残ります。`},
+ face:{body:`表は包容と共感、裏は同調しすぎとして現れます。`,
+       front:`人を安心させる存在感。`,
+       back:`感情に巻き込まれる。`,
+       bridge:`相手の気持ちと「自分の気持ち」を並べて置くスペースを作る。`},
+ flow:commonFlow,
+ talents:[
+  {name:`つながりを感じる人`,long:`人と世界をやわらかくつなぐ循環の力。`,tip:`疲れたら静かな場所に戻る選択を。`},
+  {name:`核を磨く人`,long:`感じた経験を内側で意味へと変える洞察。`,tip:`言葉にすると感情が落ち着く。`},
+  {name:`支える人`,long:`場の空気を整え、安心をつくる伴走の力。`,tip:`頼られる前に、自分の体調を守る。`}
+ ],
+ theme:`やさしさを消さずに、自分の輪郭を取り戻していく循環の学び。`
+},
+
+3:{ // 行動・前進軸（追加①）
+ core:{long:`思い立ったら動き出す、変化を現実に落とし込む推進の力。`,
+       front:`スピード感・実行力・突破の直感。`,
+       back:`焦りすぎ・余白を削りすぎ・衝動的な選択。`,
+       tip:`「急ぐ」ではなく「早めに試す」。小さく着手すれば流れは自然に動きます。`},
+ face:{body:`表は勢いと前向きさ、裏は空回りや孤独感として現れます。`,
+       front:`周囲を巻き込み前へ進める。`,
+       back:`ひとりで抱えて疲れやすい。`,
+       bridge:`速さに「間」を一呼吸だけ足すと、力が長く続きます。`},
+ flow:commonFlow,
+ talents:[
+  {name:`道を切り開く人`,long:`ゼロから一歩目をつくる始動の才能。`,tip:`始め方を軽くするほど成果が動く。`},
+  {name:`つなぐ人`,long:`人や機会を直感的に結びつける行動センス。`,tip:`思いつきをすぐ声に出す。`},
+  {name:`整える人`,long:`スピードの裏で仕組みを整える内側の技術。`,tip:`走りながら軽く整理する。`}
+ ],
+ theme:`動きながら形にする。その過程自体が、あなたの成長の舞台。`
+},
+
+4:{ // 構築・安定軸（追加②）
+ core:{long:`物事を丁寧に積み上げ、形を安定させていく構築の力。`,
+       front:`継続・責任感・現実感覚。`,
+       back:`抱え込み・義務感・変化への不安。`,
+       tip:`「ちゃんとやる」前に「まず始める」。小さな完成を重ねるほど安心は増えます。`},
+ face:{body:`表は誠実さと堅実さ、裏は固さや自己否定として現れます。`,
+       front:`周囲から信頼される土台役。`,
+       back:`自分に厳しすぎて疲れやすい。`,
+       bridge:`できている部分にも光を当てると呼吸が戻ります。`},
+ flow:commonFlow,
+ talents:[
+  {name:`形にする人`,long:`計画を現実へ落とす職人の粘り。`,tip:`完璧より、完成回数を増やす。`},
+  {name:`守る人`,long:`人や場を支え続ける継続の力。`,tip:`抱えすぎに気づいたら役割を分ける。`},
+  {name:`整合を見る人`,long:`全体の辻褄を静かに合わせる監督感覚。`,tip:`「今はここまで」で区切る勇気。`}
+ ],
+ theme:`守る強さと進める強さ。その両方を、自分のペースで統合していく学び。`
+},
+
+5:{ // 探求・変容軸（追加③）
+ core:{long:`同じ場所に留まらず、問いを持って変化し続ける探求の力。`,
+       front:`柔軟さ・発想転換・更新の感性。`,
+       back:`迷走・自己否定・終わりなき比較。`,
+       tip:`「今の仮説で進む」。答えは動きながら更新していけばいい。`},
+ face:{body:`表は自由さと好奇心、裏は落ち着かなさとして現れます。`,
+       front:`可能性を広げ、新しい景色を連れてくる。`,
+       back:`決めきれず疲れが溜まりやすい。`,
+       bridge:`選ばなかった道を否定しなくてよい。今の選択に体を置く。`},
+ flow:commonFlow,
+ talents:[
+  {name:`変化を受け入れる人`,long:`環境や価値観の更新を先に感じ取る感応の知性。`,tip:`変わる前に心を休める時間を。`},
+  {name:`発想を編む人`,long:`違う要素をつないで新しい意味を生む創造。`,tip:`浮かんだ断片をメモに残す。`},
+  {name:`境界を越える人`,long:`枠を横断し、新しい文脈を拓く旅人の魂。`,tip:`戻る場所を一つ持つと変化が深まる。`}
+ ],
+ theme:`「変わり続ける自分」を否定せず、その動きを人生の推進力へ変えていく旅。`
+}
+};
+return T[type]||T[1];
+}
+
+// ---- render ----
+function start(){
+ const name=document.getElementById("name").value.trim();
+ const birth=document.getElementById("birth").value;
+ const t=packFor(calcCore(birth));
+ const tabs=[
+  ["総合",TEXT.intro(name)],
+  ["あなたの核",TEXT.core(t)],
+  ["表と裏",TEXT.face(t)],
+  ["運気の流れ",TEXT.flow(t)],
+  ["8つの才能",TEXT.talents(t)],
+  ["人生テーマ",TEXT.mission(t)]
+ ];
+ document.getElementById("formArea").style.display="none";
+ const tabsEl=document.getElementById("tabs");
+ const secEl=document.getElementById("sections");
+ tabsEl.innerHTML="";secEl.innerHTML="";
+ tabs.forEach((p,i)=>{
+  const tab=document.createElement("div");
+  tab.className="tab"+(i===0?" active":"");
+  tab.textContent=p[0];
+  tab.onclick=()=>select(i);
+  tabsEl.appendChild(tab);
+  const sec=document.createElement("div");
+  sec.className="section"+(i===0?" active":"");
+  sec.innerHTML=p[1];
+  secEl.appendChild(sec);
+ });
+ document.getElementById("resultArea").style.display="block";
+ window.select=(idx)=>{
+  [...tabsEl.children].forEach((t,i)=>t.classList.toggle("active",i===idx));
+  [...secEl.children].forEach((s,i)=>s.classList.toggle("active",i===idx));
+ };
+}
+</script>
+</body>
+</html>
