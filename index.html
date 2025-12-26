@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>8 — 自分を見つめ直す占い</title>
+
+<style>
+body{font-family:-apple-system,Helvetica,Arial,sans-serif;background:#111;color:#eee;margin:0}
+header{padding:18px 14px;border-bottom:1px solid #333}
+h1{font-size:20px;margin:0 0 6px}
+small{opacity:.75}
+.container{padding:14px}
+button,input,select{font-size:16px}
+input,select{padding:10px;border-radius:10px;border:1px solid #444;background:#000;color:#fff;width:100%;margin-bottom:10px}
+button{padding:12px 14px;border-radius:12px;border:0;background:#0af;color:#000;font-weight:600;width:100%}
+button:disabled{opacity:.4}
+
+/* ← ここを追加（iPhoneでのタップ無効化対策） */
+#formArea,* {touch-action:manipulation}
+#formArea {position:relative;z-index:5}
+
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid #333}
+.tab{padding:10px 12px;white-space:nowrap;cursor:pointer}
+.tab.active{background:#0af;color:#000;border-radius:12px 12px 0 0}
+.section{display:none;padding:14px}
+.section.active{display:block}
+.title{font-size:18px;margin:0 0 8px}
+.block{line-height:1.7;margin-bottom:12px}
+.highlight{color:#0af}
+.note{opacity:.8;font-size:13px}
+</style>
+</head>
+
+<body>
+<header>
+<h1>8 — 自分を見つめ直す占い</h1>
+<small>総合 × 核 × 表裏 × 才能</small>
+</header>
+
+<div class="container" id="formArea">
+<div class="block">まずは入力してください。</div>
+<input id="name" placeholder="名前（ニックネームOK）">
+<input id="birthday" type="date">
+<select id="gender">
+<option value="">性別（任意）</option>
+<option value="F">女性</option>
+<option value="M">男性</option>
+<option value="O">その他</option>
+</select>
+
+<!-- クリック不可対策：explicit onclick -->
+<button id="go" onclick="startFortune()">占う</button>
+</div>
+
+<div id="resultArea" style="display:none">
+<div class="tabs" id="tabs"></div>
+
+<div class="section" id="s0">
+<h2 class="title">総合 — 今のあなたの位置</h2>
+<div id="sumText" class="block"></div>
+</div>
+
+<div class="section" id="s1">
+<h2 class="title">あなたの核（性質の中心）</h2>
+<div id="coreType" class="block"></div>
+<div id="coreDeep" class="block"></div>
+</div>
+
+<div class="section" id="s2">
+<h2 class="title">表と裏（揺らぎと扱い方）</h2>
+<div id="frontBack" class="block"></div>
+</div>
+
+<div class="section" id="s3">
+<h2 class="title">運気の流れ（これまで／今／これから）</h2>
+<div id="flow" class="block"></div>
+</div>
+
+<div class="section" id="s4">
+<h2 class="title">8つの才能（外側）</h2>
+<div id="talentOuter" class="block"></div>
+</div>
+
+<div class="section" id="s5">
+<h2 class="title">8つの才能（内側）</h2>
+<div id="talentInner" class="block"></div>
+</div>
+
+<div class="section" id="s6">
+<h2 class="title">統合（9：すべてを束ねるとき）</h2>
+<div id="integrate" class="block"></div>
+</div>
+
+<div class="section" id="s7">
+<h2 class="title">人生テーマ（まとめ）</h2>
+<div id="theme" class="block"></div>
+<div class="note">一周してから読み直すと、少し違って見えるはずです。</div>
+</div>
+</div>
+
+<script>
+const tabsDef=["総合","あなたの核","表と裏","運気の流れ","才能（外）","才能（内）","統合","人生テーマ"];
+
+function showTabs(){
+const t=document.getElementById("tabs");
+t.innerHTML="";
+tabsDef.forEach((n,i)=>{
+const d=document.createElement("div");
+d.className="tab"+(i===0?" active":"");
+d.textContent=n;
+d.onclick=()=>switchTab(i);
+t.appendChild(d);
+});
+switchTab(0);
+}
+function switchTab(i){
+document.querySelectorAll(".tab").forEach((e,k)=>e.classList.toggle("active",k===i));
+document.querySelectorAll(".section").forEach((e,k)=>e.classList.toggle("active",k===i));
+}
+
+/* ====== 分岐ロジック（A段階） ====== */
+function coreBranch(num){
+if(num===0) return {label:"論理型（客観・整理・構造）",
+deep:`あなたの核は <span class="highlight">「俯瞰してから動く」</span> 性質にあります。…`};
+if(num===1) return {label:"共感型（受容・つながり・調和）",
+deep:`あなたの核は <span class="highlight">「人や場の気配を受け取る」</span> 性質にあります。…`};
+if(num===2) return {label:"直感型（ひらめき・流れに乗る）",
+deep:`あなたの核は <span class="highlight">「感じた方向へ進む」</span> 性質にあります。…`};
+return {label:"推進型（行動・突破・前進）",
+deep:`あなたの核は <span class="highlight">「まず動く」</span> 性質にあります。…`};
+}
+
+function frontBackByCore(label){
+if(label.includes("論理型")) return `表＝冷静／裏＝考えすぎて止まる → 小さく動き直すのが鍵`;
+if(label.includes("共感型")) return `表＝やさしさ／裏＝自分後回し → 境界線を戻すことが回復`;
+if(label.includes("直感型")) return `表＝軽やかさ／裏＝評価の波 → 感覚を言語化して安定へ`;
+return `表＝行動力／裏＝止まる罪悪感 → 休止＝助走として意味づけ直す`;
+}
+
+function flowBrief(){return `これまで＝調整期／今＝軸を確認／これから＝外へ広げる流れ`; }
+function talentsOuter(){return `外側で働いている才能＝<span class="highlight">柔軟に役割を切り替える力</span>`;}
+function talentsInner(){return `内側では <span class="highlight">本来の自分へ戻ろうとする力</span> が動いている`; }
+function integrateText(){return `すべてが同時に動くとき「選ばない強さ」が働く`; }
+function themeText(n){return `${n}さんの今のテーマは <span class="highlight">視点を変えて同じ道を歩き直す</span> こと`; }
+
+/* ====== 実行関数（タップ保証） ====== */
+function startFortune(){
+const n=document.getElementById("name").value||"あなた";
+const b=document.getElementById("birthday").value;
+if(!b){alert("生年月日を入力してください");return;}
+
+const seed=new Date(b).getTime()%4;
+const core=coreBranch(seed);
+
+document.getElementById("sumText").innerHTML=
+`${n}さんは今、「当てにいく」より <span class="highlight">見方を変える地点</span> に立っています。`;
+document.getElementById("coreType").innerHTML=`タイプ：<span class="highlight">${core.label}</span>`;
+document.getElementById("coreDeep").innerHTML=core.deep;
+document.getElementById("frontBack").innerHTML=frontBackByCore(core.label);
+document.getElementById("flow").innerHTML=flowBrief();
+document.getElementById("talentOuter").innerHTML=talentsOuter();
+document.getElementById("talentInner").innerHTML=talentsInner();
+document.getElementById("integrate").innerHTML=integrateText();
+document.getElementById("theme").innerHTML=themeText(n);
+
+document.getElementById("formArea").style.display="none";
+document.getElementById("resultArea").style.display="block";
+showTabs();
+}
+</script>
+</body>
+</html>
