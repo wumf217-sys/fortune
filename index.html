@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>8 - Inner Journey</title>
+<style>
+body{font-family:-apple-system,Helvetica,Arial,sans-serif;background:#111;color:#eee;margin:0}
+header{padding:18px 16px;border-bottom:1px solid #333;font-size:18px}
+.container{padding:14px}
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid #333}
+.tab{padding:10px 14px;white-space:nowrap;cursor:pointer;border-bottom:2px solid transparent}
+.tab.active{border-color:#6cf}
+.section{display:none;padding:12px 6px;line-height:1.7}
+.section.active{display:block}
+h2{font-size:15px;margin:10px 0 6px;color:#8fd}
+strong{color:#fff}
+.note{opacity:.85}
+.footer{margin-top:30px;padding:14px 10px;border-top:1px solid #333;font-size:13px;opacity:.9}
+</style>
+<script>
+function showTab(id){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+  document.getElementById("tab-"+id).classList.add("active");
+  document.getElementById("sec-"+id).classList.add("active");
+}
+window.onload=()=>showTab("core");
+</script>
+</head>
+
+<body>
+<header>8 — 自分を読み直す占い</header>
+
+<div class="tabs">
+  <div class="tab" id="tab-core" onclick="showTab('core')">あなたの核</div>
+  <div class="tab" id="tab-frontback" onclick="showTab('frontback')">表と裏</div>
+  <div class="tab" id="tab-flow" onclick="showTab('flow')">運気の流れ</div>
+  <div class="tab" id="tab-talent" onclick="showTab('talent')">８つの才能</div>
+  <div class="tab" id="tab-inside" onclick="showTab('inside')">内側の動き</div>
+  <div class="tab" id="tab-balance" onclick="showTab('balance')">バランスと揺らぎ</div>
+  <div class="tab" id="tab-guidance" onclick="showTab('guidance')">扱い方の指針</div>
+  <div class="tab" id="tab-theme" onclick="showTab('theme')">人生テーマ</div>
+</div>
+
+<div class="container">
+
+<!-- あなたの核 -->
+<div class="section" id="sec-core">
+<h2>あなたの核（性質・本質・潜在）</h2>
+<p>
+あなたは「答えを当てたい」というよりも、<strong>自分を別の角度から見直したい</strong>時にこの占いにたどり着いています。<br>
+外側の評価より、内側の納得を大切にするタイプ。<br><br>
+これまでの人生で身につけた「強さ」は、必ずしも前へ進むための力ではなく、<strong>守るための力</strong>として働いてきました。<br>
+その強さが支えになった時期もあれば、同時に、あなたを縛ってしまった時もあります。<br><br>
+いまはその強さを「手放すか・活かすか」を選び直す地点。<br>
+ここからのテーマは、<strong>無理に変わることではなく、視点を変えること</strong>です。
+</p>
+</div>
+
+<!-- 表と裏 -->
+<div class="section" id="sec-frontback">
+<h2>表と裏（揺らぎと扱い方）</h2>
+<p>
+あなたの表の顔は「責任感・誠実・配慮」。<br>
+一方、裏側には「自分を後回しにしがち / 我慢を溜め込みやすい」という揺らぎが潜んでいます。<br><br>
+これは欠点ではなく<strong>同じ性質の裏表</strong>。<br>
+表が強く出るほど、裏も同時に動く ― それがあなたの感情の構造です。<br><br>
+扱い方の鍵は、<strong>頑張る前に立ち止まる習慣を入れること</strong>。<br>
+「やらなきゃ」で動くのではなく、「いまの自分は本当はどうしたい？」と一拍置くと、選択が変わります。
+</p>
+</div>
+
+<!-- 運気の流れ -->
+<div class="section" id="sec-flow">
+<h2>運気の流れ（これまで／今／これから）</h2>
+<p>
+これまで：<br>
+困難を「踏ん張る力」で乗り越えてきた期間。周囲には見せない努力が土台をつくりました。<br><br>
+いま：<br>
+外に進むより<strong>内側を整える流れ</strong>。焦って動くより「整理・統合・再定義」。<br><br>
+これから：<br>
+選択を狭めるのではなく、<strong>可能性を取り戻すフェーズ</strong>へ。<br>
+手放し → 再選択 → 再構築、という螺旋の上昇が始まります。
+</p>
+</div>
+
+<!-- 8つの才能 -->
+<div class="section" id="sec-talent">
+<h2>８つの才能（外側と内側）</h2>
+<p class="note">
+※すべての人は８つを持ち、その<strong>配分と使い方</strong>が違うだけ。欠けている才能はありません。
+</p>
+<p>
+外側：<br>
+① 行動の推進力 ／ ② 責任と継続 ／ ③ 共感と調和 ／ ④ 分析と洞察<br><br>
+内側：<br>
+⑤ 直感と感受性 ／ ⑥ 創造と再構築 ／ ⑦ 境界を守る力 ／ ⑧ 手放しと再定義<br><br>
+今のあなたは、<strong>外側の②③が強く働き、内側⑤⑧が覚醒途中</strong>。<br>
+ここを整えるほど、生き方はシンプルに洗練されていきます。
+</p>
+</div>
+
+<!-- 内側の動き -->
+<div class="section" id="sec-inside">
+<h2>内側の動き（感情・無意識の層）</h2>
+<p>
+あなたは「正しくありたい」という気持ちが強い分、<br>
+失敗より<strong>迷惑をかけること</strong>を恐れやすい傾向があります。<br><br>
+しかし今は、<strong>安心して間違える経験</strong>が必要な地点。<br>
+そこからしか、次の成長領域は開きません。
+</p>
+</div>
+
+<!-- バランスと揺らぎ -->
+<div class="section" id="sec-balance">
+<h2>バランスと揺らぎ（同じ性質の両極）</h2>
+<p>
+優しさ ↔ 過剰な自己犠牲<br>
+責任感 ↔ 自分の感情の後回し<br>
+堅実さ ↔ 変化への恐れ<br><br>
+どちらも「間違い」ではなく、<strong>同じ線上の位置の違い</strong>。<br>
+揺れるたびに学びは深まり、螺旋の階段を一段ずつ登っています。
+</p>
+</div>
+
+<!-- 扱い方の指針 -->
+<div class="section" id="sec-guidance">
+<h2>扱い方の指針（今日からできる一歩）</h2>
+<p>
+・何かを始める前に「本当はどうしたい？」と一呼吸。<br>
+・頑張るより「緩める」を選ぶ日を、意識的に作る。<br>
+・正しさより<strong>納得感</strong>を優先する。<br>
+・できなかった日は「責めないで観察」だけする。<br><br>
+少しずつでいい。<strong>進み方を柔らかくすること</strong>が、この時期の成長です。
+</p>
+</div>
+
+<!-- 人生テーマ -->
+<div class="section" id="sec-theme">
+<h2>人生テーマ（螺旋の歩み）</h2>
+<p>
+あなたの歩みは、同じ場所を回っているように見えて、<br>
+実は<strong>螺旋状に少しずつ高い地点へ</strong>と上がっています。<br><br>
+「表」と「裏」、「強さ」と「弱さ」。<br>
+それらは分かれているのではなく、一つの円の両側にあるだけ。<br><br>
+ここからのテーマは、<strong>否定せず・排除せず・抱き合わせて進むこと</strong>。<br>
+その在り方が、あなたの人生を静かに前へ運んでいきます。
+</p>
+<div class="footer">
+読み終えたあと、最初のタブに戻ってもう一度読んでみてください。<br>
+同じ言葉が、少し違って見えていたら ―― 旅はすでに始まっています。
+</div>
+</div>
+
+</div>
+</body>
+</html>
