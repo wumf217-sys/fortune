@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>8 — 自分を見つめ直す占い</title>
+
+<style>
+body{font-family:-apple-system,Helvetica,Arial,sans-serif;background:#111;color:#eee;margin:0}
+header{padding:18px 14px;border-bottom:1px solid #333}
+h1{font-size:20px;margin:0 0 6px}
+small{opacity:.75}
+.container{padding:14px}
+button,input,select{font-size:16px}
+input,select{padding:10px;border-radius:10px;border:1px solid #444;background:#000;color:#fff;width:100%;margin-bottom:10px}
+button{padding:12px 14px;border-radius:12px;border:0;background:#0af;color:#000;font-weight:600;width:100%}
+button:disabled{opacity:.4}
+#formArea,*{touch-action:manipulation}
+#formArea{position:relative;z-index:5}
+
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid #333}
+.tab{padding:10px 12px;white-space:nowrap;cursor:pointer}
+.tab.active{background:#0af;color:#000;border-radius:12px 12px 0 0}
+.section{display:none;padding:14px}
+.section.active{display:block}
+.title{font-size:18px;margin:0 0 8px}
+.block{line-height:1.7;margin-bottom:14px}
+.sub{opacity:.85}
+.highlight{color:#0af}
+.note{opacity:.75;font-size:13px}
+</style>
+</head>
+
+<body>
+<header>
+<h1>8 — 自分を見つめ直す占い</h1>
+<small>総合 × 核 × 表裏 × 才能</small>
+</header>
+
+<div class="container" id="formArea">
+<div class="block">まずは入力してください。</div>
+<input id="name" placeholder="名前（ニックネームOK）">
+<input id="birthday" type="date">
+<select id="gender">
+<option value="">性別（任意）</option>
+<option value="F">女性</option>
+<option value="M">男性</option>
+<option value="O">その他</option>
+</select>
+<button onclick="startFortune()">占う</button>
+</div>
+
+<div id="resultArea" style="display:none">
+<div class="tabs" id="tabs"></div>
+
+<div class="section" id="s0">
+<h2 class="title">総合 — 今のあなたの位置</h2>
+<div id="sumText" class="block"></div>
+</div>
+
+<div class="section" id="s1">
+<h2 class="title">あなたの核（性質の中心）</h2>
+<div id="coreType" class="block"></div>
+<div id="coreDeep" class="block"></div>
+</div>
+
+<div class="section" id="s2">
+<h2 class="title">表と裏（揺らぎと扱い方）</h2>
+<div id="frontBack" class="block"></div>
+<div id="handling" class="block"></div>
+</div>
+
+<div class="section" id="s3">
+<h2 class="title">運気の流れ（これまで／今／これから）</h2>
+<div id="flow" class="block"></div>
+</div>
+
+<div class="section" id="s4">
+<h2 class="title">8つの才能（外側）</h2>
+<div id="talentOuter" class="block"></div>
+</div>
+
+<div class="section" id="s5">
+<h2 class="title">8つの才能（内側）</h2>
+<div id="talentInner" class="block"></div>
+</div>
+
+<div class="section" id="s6">
+<h2 class="title">統合（9：すべてを束ねるとき）</h2>
+<div id="integrate" class="block"></div>
+</div>
+
+<div class="section" id="s7">
+<h2 class="title">人生テーマ（まとめ）</h2>
+<div id="theme" class="block"></div>
+<div class="note">一周してから読み直すと、少し違って見えるはずです。</div>
+</div>
+</div>
+
+<script>
+const tabsDef=["総合","あなたの核","表と裏","運気の流れ","才能（外）","才能（内）","統合","人生テーマ"];
+
+function showTabs(){
+const t=document.getElementById("tabs");
+t.innerHTML="";
+tabsDef.forEach((n,i)=>{
+const d=document.createElement("div");
+d.className="tab"+(i===0?" active":"");
+d.textContent=n;
+d.onclick=()=>switchTab(i);
+t.appendChild(d);
+});
+switchTab(0);
+}
+
+function switchTab(i){
+document.querySelectorAll(".tab").forEach((e,k)=>e.classList.toggle("active",k===i));
+document.querySelectorAll(".section").forEach((e,k)=>e.classList.toggle("active",k===i));
+}
+
+/* ---------- 分岐（核タイプ） ---------- */
+function coreBranch(num){
+if(num===0) return {
+id:"logic",
+label:"論理型（客観・整理・構造）",
+deep:`あなたの核は <span class="highlight">「いったん距離を置いてから理解する」</span> 性質にあります。  
+物事を感情だけで判断せず、筋道や理由を探し、納得できた時に初めて力が前へ進むタイプ。  
+その冷静さは強みであり、同時に「慎重さがブレーキになる」という影も抱えています。`
+};
+if(num===1) return {
+id:"empathy",
+label:"共感型（受容・つながり・調和）",
+deep:`あなたの核は <span class="highlight">「人や場の温度を感じ取る」</span> 性質にあります。  
+周囲の変化や小さな違和感を素早く察知し、空気をやわらげようとする。  
+その優しさは大きな力ですが、同時に自分を後回しにしやすい傾向も内包しています。`
+};
+if(num===2) return {
+id:"intuition",
+label:"直感型（ひらめき・即断・流れに乗る）",
+deep:`あなたの核は <span class="highlight">「言葉よりも感覚が先に動く」</span> 性質にあります。  
+説明できない“なんとなく”が、あなたにとって重要なナビとなり、正しい選択を導くことも多い。  
+ただし、その感覚が揺れた時、自己評価も一緒に揺らぎやすい側面があります。`
+};
+return {
+id:"drive",
+label:"推進型（行動・突破・前進）",
+deep:`あなたの核は <span class="highlight">「止まるより、まず進む」</span> 性質にあります。  
+動きながら考え、体験を通して答えに辿り着く。  
+その推進力は周囲を動かす源であり、同時に「休むことへの罪悪感」を抱えやすい資質でもあります。`
+};
+}
+
+/* ---------- B：表・裏・扱い方（タイプ別） ---------- */
+function frontBackPack(type){
+if(type==="logic") return {
+front:`表の顔は <span class="highlight">「冷静・安定・整然」</span>。  
+周囲からは頼もしく見られやすく、「大丈夫に見える人」になりやすい。`,
+back:`しかし裏側では、  
+<span class="highlight">考えすぎて動けなくなる・正解探しで自分を縛る</span> という揺らぎが出やすい。  
+頭の中で未来を何度もシミュレーションし、結論を先延ばしにしてしまうことがあります。`,
+handle:`このタイプの扱い方は  
+<span class="highlight">「先に小さく動き、あとから整理する」</span> という逆順。  
+完璧な答えを用意してから進むのではなく、  
+一歩だけ動いてみる → 得た感覚を再び整える。  
+そうすることで、停滞は前進へと変わっていきます。`
+};
+if(type==="empathy") return {
+front:`表の顔は <span class="highlight">「やさしさ・受容・つながり」</span>。  
+人を傷つけない選択を、無意識のうちに選び取ろうとします。`,
+back:`しかし裏側では、  
+<span class="highlight">自分を後回しにして、静かに疲れを溜めていく</span> という揺らぎが起こりやすい。  
+「嫌と言えない」「無理を笑顔で隠す」という形で現れます。`,
+handle:`このタイプの扱い方は  
+<span class="highlight">「境界線を少しだけ自分側に戻す」</span> こと。  
+誰かの気持ちを守る前に、まず自分の体調・感情を一度確認する。  
+それはわがままではなく、やさしさを健やかに保つための土台です。`
+};
+if(type==="intuition") return {
+front:`表の顔は <span class="highlight">「軽やか・流れに乗る・決断が早い」</span>。  
+言葉になる前の感覚をキャッチし、チャンスを引き寄せやすい性質。`,
+back:`しかし裏側では、  
+<span class="highlight">気分の波と一緒に自己評価が揺れる</span> という揺らぎが出やすい。  
+うまくいかない日には「全部ダメだ」と感じてしまうことも。`,
+handle:`このタイプの扱い方は  
+<span class="highlight">「感覚を短い言葉にして残す」</span> こと。  
+その瞬間に感じた違和感・良い予感をメモに残すことで、  
+直感は経験へと変わり、再現性を持ち始めます。`
+};
+return {
+front:`表の顔は <span class="highlight">「行動力・突破・前進」</span>。  
+周囲が迷っている間に、あなたは動き始めています。`,
+back:`しかし裏側では、  
+<span class="highlight">止まることへの罪悪感</span> が揺らぎとして現れやすい。  
+「休む＝負ける」と感じ、自分を追い込みすぎてしまうことがあります。`,
+handle:`このタイプの扱い方は  
+<span class="highlight">「休止＝助走」と意味づけを変える</span> こと。  
+止まることは失敗ではなく、次の一歩を強くするための準備。  
+そう捉え直すだけで、心と体のバランスは自然に戻り始めます。`
+};
+}
+
+/* ---------- 他セクションは簡易文（後で強化予定） ---------- */
+function flowBrief(){return `これまで＝調整期／今＝「軸を再確認する時期」／これから＝外へ広げていく流れ`; }
+function talentsOuter(){return `外側で前面に働いているのは <span class="highlight">状況に合わせて形を変える柔軟性</span>。`; }
+function talentsInner(){return `内側では <span class="highlight">本来の自分の輪郭へ少しずつ戻ろうとする力</span> が静かに動いています。`; }
+function integrateText(){return `複数の資質が同時に動くとき、あなたは <span class="highlight">「選ばない強さ」</span> を発揮します。`; }
+function themeText(n){return `${n}さんの今のテーマは <span class="highlight">視点を変えて、同じ道をもう一度歩き直すこと</span> にあります。`; }
+
+/* ---------- 実行 ---------- */
+function startFortune(){
+const n=document.getElementById("name").value||"あなた";
+const b=document.getElementById("birthday").value;
+if(!b){alert("生年月日を入力してください");return;}
+
+const seed=new Date(b).getTime()%4;
+const core=coreBranch(seed);
+const fb=frontBackPack(core.id);
+
+document.getElementById("sumText").innerHTML=
+`${n}さんは今、「当てる」よりも <span class="highlight">見方を少し変えてみる地点</span> に立っています。`;
+
+document.getElementById("coreType").innerHTML=`タイプ：<span class="highlight">${core.label}</span>`;
+document.getElementById("coreDeep").innerHTML=core.deep;
+
+document.getElementById("frontBack").innerHTML=`${fb.front}<br><br>${fb.back}`;
+document.getElementById("handling").innerHTML=`<span class="sub">—— 扱い方 ——</span><br>${fb.handle}`;
+
+document.getElementById("flow").innerHTML=flowBrief();
+document.getElementById("talentOuter").innerHTML=talentsOuter();
+document.getElementById("talentInner").innerHTML=talentsInner();
+document.getElementById("integrate").innerHTML=integrateText();
+document.getElementById("theme").innerHTML=themeText(n);
+
+document.getElementById("formArea").style.display="none";
+document.getElementById("resultArea").style.display="block";
+showTabs();
+}
+</script>
+</body>
+</html>
