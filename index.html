@@ -1,0 +1,204 @@
+<!-- ★ ここから貼り付け（全体差し替え版） ★ -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>8 — 自分を見つめ直す占い</title>
+
+<style>
+body{font-family:-apple-system,Helvetica,Arial,sans-serif;background:#111;color:#eee;margin:0}
+header{padding:18px 14px;border-bottom:1px solid #333}
+h1{font-size:20px;margin:0 0 6px}
+small{opacity:.75}
+.container{padding:14px}
+button,input,select{font-size:16px}
+input,select{padding:10px;border-radius:10px;border:1px solid #444;background:#000;color:#fff;width:100%;margin-bottom:10px}
+button{padding:12px 14px;border-radius:12px;border:0;background:#0af;color:#000;font-weight:600;width:100%}
+button:disabled{opacity:.4}
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid #333}
+.tab{padding:10px 12px;white-space:nowrap;cursor:pointer}
+.tab.active{background:#0af;color:#000;border-radius:12px 12px 0 0}
+.section{display:none;padding:14px}
+.section.active{display:block}
+.block{line-height:1.7;margin-bottom:14px}
+.highlight{color:#0af}
+.sub{opacity:.8}
+.note{opacity:.75;font-size:13px}
+</style>
+</head>
+
+<body>
+<header>
+<h1>8 — 自分を見つめ直す占い</h1>
+<small>総合 × 核 × 表裏 × 才能</small>
+</header>
+
+<div class="container" id="formArea">
+<div class="block">まずは入力してください。</div>
+<input id="name" placeholder="名前（ニックネームOK）">
+<input id="birthday" type="date">
+<select id="gender">
+<option value="">性別（任意）</option>
+<option value="F">女性</option>
+<option value="M">男性</option>
+<option value="O">その他</option>
+</select>
+<button onclick="startFortune()">占う</button>
+</div>
+
+<div id="resultArea" style="display:none">
+<div class="tabs" id="tabs"></div>
+
+<div class="section" id="s0">
+<h2>総合 — 今の位置</h2>
+<div id="sumText" class="block"></div>
+</div>
+
+<div class="section" id="s1">
+<h2>あなたの核</h2>
+<div id="coreType" class="block"></div>
+<div id="coreDeep" class="block"></div>
+</div>
+
+<div class="section" id="s2">
+<h2>表と裏（揺らぎと扱い方）</h2>
+<div id="frontBack" class="block"></div>
+<div id="handling" class="block"></div>
+</div>
+
+<div class="section" id="s3">
+<h2>運気の流れ</h2>
+<div id="flow" class="block"></div>
+</div>
+
+<div class="section" id="s4">
+<h2>8つの才能（外側）</h2>
+<div id="talentOuter" class="block"></div>
+</div>
+
+<div class="section" id="s5">
+<h2>8つの才能（内側）</h2>
+<div id="talentInner" class="block"></div>
+</div>
+
+<div class="section" id="s6">
+<h2>統合（9）</h2>
+<div id="integrate" class="block"></div>
+</div>
+
+<div class="section" id="s7">
+<h2>人生テーマ</h2>
+<div id="theme" class="block"></div>
+<div class="note">一周してから読み直すと、少し違って見えるはずです。</div>
+</div>
+</div>
+
+<script>
+const tabsDef=["総合","あなたの核","表と裏","運気の流れ","才能（外）","才能（内）","統合","人生テーマ"];
+
+function showTabs(){
+const t=document.getElementById("tabs");t.innerHTML="";
+tabsDef.forEach((n,i)=>{const d=document.createElement("div");
+d.className="tab"+(i===0?" active":"");d.textContent=n;
+d.onclick=()=>switchTab(i);t.appendChild(d);});
+switchTab(0);
+}
+function switchTab(i){
+document.querySelectorAll(".tab").forEach((e,k)=>e.classList.toggle("active",k===i));
+document.querySelectorAll(".section").forEach((e,k)=>e.classList.toggle("active",k===i));
+}
+
+/* ---------- 核タイプ ---------- */
+function coreBranch(seed){
+if(seed===0) return {id:"logic",label:"論理型",deep:`…（前回と同じ／略）`};
+if(seed===1) return {id:"empathy",label:"共感型",deep:`…`};
+if(seed===2) return {id:"intuition",label:"直感型",deep:`…`};
+return {id:"drive",label:"推進型",deep:`…`};
+}
+
+/* ---------- 表裏（前回の文章そのまま使用） ---------- */
+function frontBackPack(type){ /* …既存処理そのまま… */ return FB[type]; }
+
+/* ---------- ★ 才能：外側（タイプ別・長文化） ---------- */
+const TalentOuter={
+logic:`外側で強く働いている才能は  
+<span class="highlight">「構造を見抜き、混乱の中から秩序をつくる力」</span>。  
+状況を俯瞰し、どこから手をつければ全体が整うのかを素早く理解します。  
+周囲はそれを「落ち着き」「頼もしさ」と感じますが、  
+実際のあなたは —— 正解よりも <span class="highlight">“納得できる形”</span> を探しています。`,
+empathy:`外側で現れている才能は  
+<span class="highlight">「関係性を温度で感じ取り、場をやわらげる力」</span>。  
+言葉よりも表情や間合いを読み取り、衝突を大きくしない方向へさりげなく導きます。  
+これは特別な優しさであり、同時に <span class="highlight">自分の気持ちを隠す癖</span> と隣り合っています。`,
+intuition:`外側で輝いている才能は  
+<span class="highlight">「まだ形になっていない兆しをつかむ力」</span>。  
+人より少し早く“流れの変化”に気づき、軽やかに軌道を変えられる。  
+その動きは周囲からは天性のセンスのように映ります。`,
+drive:`外側で発揮されている才能は  
+<span class="highlight">「停滞を突破し、物事を前へ動かす力」</span>。  
+あなたが動き始めると、周囲も自然とつられて動き出します。  
+その勢いはプロジェクトや人の背中を押す推進力となります。`
+};
+
+/* ---------- ★ 才能：内側（タイプ別・長文化） ---------- */
+const TalentInner={
+logic:`内側では  
+<span class="highlight">「迷いを抱えたまま進む勇気」</span> が静かに育っています。  
+あなたは本当は、不完全なまま動くことを恐れていません。  
+ただ、“責任”を背負うほど慎重さが前に出てくるのです。`,
+empathy:`内側では  
+<span class="highlight">「自分を守るための境界線」</span> が芽生えています。  
+人の痛みを大切にするあなたは、  
+同じくらい <span class="highlight">自分の痛みも大切にしてよい</span> という感覚を取り戻そうとしています。`,
+intuition:`内側では  
+<span class="highlight">「直感を経験へ変換する力」</span> が積み重なっています。  
+感覚は一度きりの偶然ではなく、  
+少しずつ <span class="highlight">“再現できる自分の型”</span> へと育っています。`,
+drive:`内側では  
+<span class="highlight">「立ち止まる強さ」</span> が静かに深まっています。  
+休むことは後退ではなく、  
+次の一歩を <span class="highlight">さらに遠くへ届かせるための助走</span> だと、心が理解し始めています。`
+};
+
+/* ---------- 他セクション（簡易） ---------- */
+function flowBrief(){return `これまで＝調整期／今＝軸の再確認／これから＝外へ広げていく流れ`; }
+function integrateText(){return `複数の資質が同時に動くとき、あなたは <span class="highlight">「選ばない強さ」</span> を発揮します。`; }
+function themeText(n){return `${n}さんの今のテーマは <span class="highlight">視点を変えて、同じ道をもう一度歩き直すこと</span>。`; }
+
+/* ---------- 実行 ---------- */
+function startFortune(){
+const n=document.getElementById("name").value||"あなた";
+const b=document.getElementById("birthday").value;
+if(!b){alert("生年月日を入力してください");return;}
+
+const seed=new Date(b).getTime()%4;
+const core=coreBranch(seed);
+const fb=frontBackPack(core.id);
+
+document.getElementById("sumText").innerHTML=
+`${n}さんは今、「当てる」よりも <span class="highlight">見方を少し変えてみる地点</span> に立っています。`;
+
+document.getElementById("coreType").innerHTML=`タイプ：<span class="highlight">${core.label}</span>`;
+document.getElementById("coreDeep").innerHTML=core.deep;
+
+document.getElementById("frontBack").innerHTML=`${fb.front}<br><br>${fb.back}`;
+document.getElementById("handling").innerHTML=`<span class="sub">—— 扱い方 ——</span><br>${fb.handle}`;
+
+document.getElementById("flow").innerHTML=flowBrief();
+
+/* ★ 才能分岐を反映 */
+document.getElementById("talentOuter").innerHTML=TalentOuter[core.id];
+document.getElementById("talentInner").innerHTML=TalentInner[core.id];
+
+document.getElementById("integrate").innerHTML=integrateText();
+document.getElementById("theme").innerHTML=themeText(n);
+
+document.getElementById("formArea").style.display="none";
+document.getElementById("resultArea").style.display="block";
+showTabs();
+}
+</script>
+</body>
+</html>
+<!-- ★ ここまで貼り付け ★ -->
