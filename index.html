@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>8 − あなたを読み解く占い</title>
+<style>
+body { font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif; background:#fafafa; margin:0; }
+header { padding:16px; background:#111; color:#fff; text-align:center; }
+.container { padding:14px; }
+input, select { width:100%; padding:10px; margin:6px 0 12px; }
+button { width:100%; padding:12px; font-size:15px; }
+.tabs { display:flex; overflow-x:auto; border-bottom:1px solid #ddd; }
+.tab { padding:10px 14px; white-space:nowrap; cursor:pointer; }
+.tab.active { border-bottom:2px solid #000; font-weight:600; }
+.section { display:none; padding:10px 2px 20px; line-height:1.7; }
+.section.active { display:block; }
+.note { margin-top:10px; opacity:.7; font-size:13px; }
+</style>
+</head>
+<body>
+
+<header>8 − あなたを読み解く占い</header>
+
+<div class="container" id="formArea">
+  <label>姓</label><input id="sei">
+  <label>名</label><input id="mei">
+  <label>生年月日</label><input id="birth" type="date">
+  <label>性別</label>
+  <select id="gender">
+    <option value="na">未選択</option>
+    <option value="m">男性</option>
+    <option value="f">女性</option>
+    <option value="o">その他</option>
+  </select>
+  <button onclick="uranau()">占う</button>
+</div>
+
+<div class="container" id="resultArea" style="display:none;">
+  <div class="tabs" id="tabs"></div>
+
+  <div id="sec_sogo" class="section active"></div>
+  <div id="sec_kaku" class="section"></div>
+  <div id="sec_omoteura" class="section"></div>
+  <div id="sec_unki" class="section"></div>
+  <div id="sec_sainou" class="section"></div>
+  <div id="sec_shimei" class="section"></div>
+  <div id="sec_kadai" class="section"></div>
+  <div id="sec_theme" class="section"></div>
+
+  <div class="note">※ 現段階：<b>才能タブ＝タイプ／揺らぎで内容が変化する実装完了</b><br>他タブは順次「長文化＋分岐」追加予定</div>
+</div>
+
+<script>
+function numTypeFromBirthday(ymd){
+  if(!ymd) return 1;
+  const n = ymd.replace(/-/g,"").split("").reduce((s,c)=>s+Number(c),0);
+  const r = n % 9;
+  return r===0 ? 9 : r; // 9=統合
+}
+
+// 揺らぎ決定（簡易：名前コード or ランダム）
+function yawaragiCode(name){
+  if(!name) return "A";
+  const v = Array.from(name).reduce((s,c)=>s+c.charCodeAt(0),0);
+  return v % 2 === 0 ? "A" : "B";
+}
+
+function switchTab(id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById("tab_"+id).classList.add('active');
+  document.getElementById("sec_"+id).classList.add('active');
+}
+
+function uranau(){
+  const sei = document.getElementById("sei").value.trim();
+  const mei = document.getElementById("mei").value.trim();
+  const birth = document.getElementById("birth").value;
+  const name = sei+mei;
+
+  const type = numTypeFromBirthday(birth);   // 1〜9
+  const yaw = yawaragiCode(name);            // A or B
+
+  document.getElementById("formArea").style.display="none";
+  document.getElementById("resultArea").style.display="block";
+
+  setupTabs();
+  renderAll(type,yaw,name);
+}
+
+function setupTabs(){
+  const t = [
+    ["sogo","総合"],
+    ["kaku","あなたの核"],
+    ["omoteura","表と裏"],
+    ["unki","運気の流れ"],
+    ["sainou","8つの才能"],
+    ["shimei","使命"],
+    ["kadai","課題"],
+    ["theme","人生のテーマ"]
+  ];
+  const wrap = document.getElementById("tabs");
+  wrap.innerHTML="";
+  t.forEach((p,i)=>{
+    const el=document.createElement("div");
+    el.className="tab"+(i===0?" active":"");
+    el.id="tab_"+p[0];
+    el.innerText=p[1];
+    el.onclick=()=>switchTab(p[0]);
+    wrap.appendChild(el);
+  });
+}
+
+// —— 基本文（暫定ベース。ここから順次長文化していく） ——
+function baseText(title, body){
+  return `<h3>${title}</h3><p>${body}</p>`;
+}
+
+// ====== 才能：タイプ×揺らぎで出し分け ======
+function talentText(type,yaw){
+  const T = {
+    1:{A:"推進（突破型）\n迷いが続く状況を止め、まず一歩を切り開く力。",
+       B:"推進（牽引型）\n周囲の視線を揃え、共に前へ進める力。"},
+    2:{A:"共感（受容型）\n言葉を否定せず受け止め、安心の土台をつくる。",
+       B:"共感（変化型）\n痛みを理解しつつ、未来へ伴走して背中を押す。"},
+    3:{A:"創造（再解釈型）\n当たり前の中に新しい意味を見つける。",
+       B:"創造（突破発想型）\n枠そのものを組み替え、停滞を刷新する。"},
+    4:{A:"洞察（静観型）\n少し距離を置き、全体像から判断する。",
+       B:"洞察（直感型）\n兆しを素早く察知し、方向を素早く修正する。"},
+    5:{A:"継続（積層型）\n小さな継続を積み重ね、大きな差へと変える。",
+       B:"継続（波動型）\n“波”を掴んだ瞬間に集中し、一気に進める。"},
+    6:{A:"調整（対人型）\n人と人の温度差を和らげ、関係を保つ。",
+       B:"調整（構造型）\n手順や仕組みを整え、無理のない形へ変える。"},
+    7:{A:"均衡（守り型）\n良さを見極め、崩しすぎず安定を守る。",
+       B:"均衡（攻め型）\n安定を保ちつつ、少しだけ揺らして前へ進める。"},
+    8:{A:"統合（経験型）\n過去の点を線に結び、意味として再構成する。",
+       B:"統合（未来型）\n未来から逆算し、今を位置づけて統合する。"},
+    9:{A:"統合拡張（全域型）\n8つすべての要素が同時に現れやすい“統合前段階”。",
+       B:"統合拡張（躍動型）\n複数の力が一度に動き、飛躍と負荷が同居する。"}
+  };
+  const hint = {
+    1:{A:"任せる部分を残す",B:"半歩でも動いてOK"},
+    2:{A:"まず自分の疲労を確認",B:"相手の速度を確認"},
+    3:{A:"少しだけ言語化を増やす",B:"小さな試作から共有"},
+    4:{A:"期限を決めて動く",B:"一言メモで後追い補足"},
+    5:{A:"“やらない日”を許す",B:"波の前後に休息を置く"},
+    6:{A:"負担を言葉にして共有",B:"気持ち確認を一拍入れる"},
+    7:{A:"変えない理由を言葉に",B:"変える理由を一度深く"},
+    8:{A:"過去に区切りの儀式を",B:"今できる一手を現実化"},
+    9:{A:"一度に抱えすぎない配分",B:"足場を固定してから加速"}
+  };
+  const core = T[type]?.[yaw] || "";
+  const adv = hint[type]?.[yaw] || "";
+  return `<h3>8つの才能（タイプ${type}／揺らぎ${yaw}）</h3>
+  <p>${core.replace(/\n/g,"<br>")}</p>
+  <p><b>扱い方ヒント：</b>${adv}</p>`;
+}
+
+// —— 各タブ描画 ——
+function renderAll(type,yaw,name){
+  document.getElementById("sec_sogo").innerHTML =
+    baseText("総合（導入）",
+      "あなたは今、答えを「当ててもらう」のではなく、" +
+      "自分を一度立ち止まって見直したい地点に立っています。" +
+      "ここから先は、あなた自身の物語を“別の角度から読み直す旅”として進みます。");
+
+  document.getElementById("sec_kaku").innerHTML =
+    baseText("あなたの核（ベース枠）",
+      "※ この章は後続フェーズで「タイプ別の長文化＋分岐」を追加します。");
+
+  document.getElementById("sec_omoteura").innerHTML =
+    baseText("表と裏（ベース枠）",
+      "※ 後続フェーズで「性質の揺らぎと言い換え」を反映予定。");
+
+  document.getElementById("sec_unki").innerHTML =
+    baseText("運気の流れ（ベース枠）",
+      "※ 今／これまで／これから をタイプ別に拡張予定。");
+
+  document.getElementById("sec_sainou").innerHTML =
+    talentText(type,yaw);
+
+  document.getElementById("sec_shimei").innerHTML =
+    baseText("使命（提示型・ベース枠）",
+      "※ 後続フェーズで「提示→活かし方」の分岐文章を実装します。");
+
+  document.getElementById("sec_kadai").innerHTML =
+    baseText("課題（ベース枠）",
+      "※ 分岐ロジック確定後に追加します。");
+
+  document.getElementById("sec_theme").innerHTML =
+    baseText("人生のテーマ（ベース枠）",
+      "※ 全章を統合してから最終まとめを差し込みます。");
+}
+</script>
+</body>
+</html>
