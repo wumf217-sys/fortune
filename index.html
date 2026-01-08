@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Balance Fortune</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+      background: #fafafa;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      padding: 16px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    nav {
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 1px solid #ddd;
+      background: #fff;
+    }
+    nav button {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      background: none;
+      font-size: 14px;
+    }
+    nav button.active {
+      border-bottom: 2px solid #000;
+      font-weight: bold;
+    }
+    main {
+      padding: 20px;
+      line-height: 1.8;
+      font-size: 15px;
+    }
+    .hidden { display: none; }
+    .btn {
+      display: block;
+      margin: 24px auto;
+      padding: 12px 24px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Balance Fortune</h1>
+  <p>揺れ続けることも、ひとつの完成</p>
+</header>
+
+<nav>
+  <button onclick="showTab('core')" class="active">核</button>
+  <button onclick="showTab('theme')">人生テーマ</button>
+  <button onclick="showTab('mission')">使命</button>
+  <button onclick="showTab('talent')">才能</button>
+  <button onclick="showTab('flow')">運気</button>
+</nav>
+
+<main>
+  <section id="core">
+    <p>
+      あなたは、どれか一つの側面だけで説明できる人ではありません。  
+      矛盾や揺らぎを抱えながら、その都度バランスを取り直してきた人です。
+    </p>
+    <p>
+      それは未完成なのではなく、  
+      動き続けているからこそ成立している形なのかもしれません。
+    </p>
+  </section>
+
+  <section id="theme" class="hidden">
+    <p>
+      あなたの人生のテーマは「安定すること」ではありません。
+    </p>
+    <p>
+      不安定さの中で、自分なりの均衡点を探し続けること。  
+      その過程そのものが、あなたの人生を形作っています。
+    </p>
+  </section>
+
+  <section id="mission" class="hidden">
+    <p>
+      あなたの使命は、何かを完成させることではなく、  
+      複数の価値観や立場を同時に抱えたまま進む姿勢を示すことです。
+    </p>
+    <p>
+      その在り方自体が、誰かの視野を広げるきっかけになります。
+    </p>
+  </section>
+
+  <section id="talent" class="hidden">
+    <p><strong>才能①：</strong> 外と内を行き来する感覚</p>
+    <p><strong>才能②：</strong> 相反するものを並べて見られる視点</p>
+    <p><strong>才能③：</strong> 揺れを恐れずに留まれる強さ</p>
+  </section>
+
+  <section id="flow" class="hidden">
+    <p>
+      今の運気は、どちらかに決め切ることを求めていません。
+    </p>
+    <p>
+      迷いながらでも動き続けることで、  
+      気づいた時に全体が噛み合う流れです。
+    </p>
+  </section>
+
+  <button class="btn" onclick="alert('占い結果が表示されました')">
+    占う
+  </button>
+</main>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
