@@ -1,128 +1,190 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>Balance Fortune</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-      background: #fafafa;
-      color: #222;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      padding: 16px;
-      text-align: center;
-      border-bottom: 1px solid #ddd;
-    }
-    nav {
-      display: flex;
-      overflow-x: auto;
-      border-bottom: 1px solid #ddd;
-      background: #fff;
-    }
-    nav button {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      background: none;
-      font-size: 14px;
-    }
-    nav button.active {
-      border-bottom: 2px solid #000;
-      font-weight: bold;
-    }
-    main {
-      padding: 20px;
-      line-height: 1.8;
-      font-size: 15px;
-    }
-    .hidden { display: none; }
-    .btn {
-      display: block;
-      margin: 24px auto;
-      padding: 12px 24px;
-      font-size: 16px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>8の書｜占いジェネレーター</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background: #0f0f0f;
+  color: #f2f2f2;
+}
+
+header {
+  padding: 16px;
+  text-align: center;
+  font-size: 18px;
+  letter-spacing: 0.1em;
+}
+
+nav {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid #333;
+}
+
+nav button {
+  flex: 1;
+  min-width: 100px;
+  padding: 12px 8px;
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 14px;
+}
+
+nav button.active {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+}
+
+section {
+  display: none;
+  padding: 24px;
+  line-height: 1.9;
+}
+
+section.active {
+  display: block;
+}
+
+h2 {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+p {
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+</style>
 </head>
+
 <body>
 
 <header>
-  <h1>Balance Fortune</h1>
-  <p>揺れ続けることも、ひとつの完成</p>
+8の書｜揺らぎの占い
 </header>
 
 <nav>
-  <button onclick="showTab('core')" class="active">核</button>
-  <button onclick="showTab('theme')">人生テーマ</button>
-  <button onclick="showTab('mission')">使命</button>
-  <button onclick="showTab('talent')">才能</button>
-  <button onclick="showTab('flow')">運気</button>
+  <button class="tab active" data-target="tab1">核</button>
+  <button class="tab" data-target="tab2">使命</button>
+  <button class="tab" data-target="tab3">運気</button>
+  <button class="tab" data-target="tab4">才能</button>
+  <button class="tab" data-target="tab5">ゆらぎ</button>
+  <button class="tab" data-target="tab6">扱い方</button>
+  <button class="tab" data-target="tab7">統合</button>
+  <button class="tab" data-target="tab8">人生テーマ</button>
 </nav>
 
-<main>
-  <section id="core">
-    <p>
-      あなたは、どれか一つの側面だけで説明できる人ではありません。  
-      矛盾や揺らぎを抱えながら、その都度バランスを取り直してきた人です。
-    </p>
-    <p>
-      それは未完成なのではなく、  
-      動き続けているからこそ成立している形なのかもしれません。
-    </p>
-  </section>
+<section id="tab1" class="active">
+  <h2>あなたの核</h2>
+  <p>
+  ここは「あなたはこういう人です」と断定する場所ではありません。  
+  今、どこに立っているかをそっと示すための地点です。
+  </p>
+  <p>
+  状態は固定されていません。  
+  変わるからこそ、次の一歩が見えてきます。
+  </p>
+</section>
 
-  <section id="theme" class="hidden">
-    <p>
-      あなたの人生のテーマは「安定すること」ではありません。
-    </p>
-    <p>
-      不安定さの中で、自分なりの均衡点を探し続けること。  
-      その過程そのものが、あなたの人生を形作っています。
-    </p>
-  </section>
+<section id="tab2">
+  <h2>使命（提示）</h2>
+  <p>
+  これは必然ではありません。  
+  けれど、意味のある偶然の一致のようなものです。
+  </p>
+  <p>
+  今回ここに辿り着いたこと自体が、  
+  ひとつの「向き」を示しています。
+  </p>
+</section>
 
-  <section id="mission" class="hidden">
-    <p>
-      あなたの使命は、何かを完成させることではなく、  
-      複数の価値観や立場を同時に抱えたまま進む姿勢を示すことです。
-    </p>
-    <p>
-      その在り方自体が、誰かの視野を広げるきっかけになります。
-    </p>
-  </section>
+<section id="tab3">
+  <h2>運気の流れ</h2>
+  <p>
+  これまで・今・これから。  
+  流れは直線ではなく、重なりながら進んでいます。
+  </p>
+  <p>
+  今どこに立っているかがわかると、  
+  無理に進まなくても前に行けます。
+  </p>
+</section>
 
-  <section id="talent" class="hidden">
-    <p><strong>才能①：</strong> 外と内を行き来する感覚</p>
-    <p><strong>才能②：</strong> 相反するものを並べて見られる視点</p>
-    <p><strong>才能③：</strong> 揺れを恐れずに留まれる強さ</p>
-  </section>
+<section id="tab4">
+  <h2>8つの才能</h2>
+  <p>
+  才能は「ある・ない」ではありません。  
+  全員がすべて持っています。
+  </p>
+  <p>
+  使われているもの、休んでいるもの、  
+  誤解されているものがあるだけです。
+  </p>
+</section>
 
-  <section id="flow" class="hidden">
-    <p>
-      今の運気は、どちらかに決め切ることを求めていません。
-    </p>
-    <p>
-      迷いながらでも動き続けることで、  
-      気づいた時に全体が噛み合う流れです。
-    </p>
-  </section>
+<section id="tab5">
+  <h2>⑤ ゆらぎ</h2>
+  <p>
+  バランスとは、止まることではありません。
+  </p>
+  <p>
+  ゆれながら、崩れながら、  
+  それでも保たれている状態。
+  </p>
+</section>
 
-  <button class="btn" onclick="alert('占い結果が表示されました')">
-    占う
-  </button>
-</main>
+<section id="tab6">
+  <h2>才能の扱い方</h2>
+  <p>
+  正解はありません。  
+  視点を変えるためのヒントです。
+  </p>
+  <p>
+  どれかを直そうとしなくて大丈夫です。
+  </p>
+</section>
+
+<section id="tab7">
+  <h2>統合</h2>
+  <p>
+  分かれていたものが、  
+  ひとつの流れとして見え始めます。
+  </p>
+  <p>
+  ここで無理にまとめなくても構いません。
+  </p>
+</section>
+
+<section id="tab8">
+  <h2>人生のテーマ</h2>
+  <p>
+  同じ場所を回っているようで、  
+  実は少しずつ違う高さにいます。
+  </p>
+  <p>
+  それが、あなたの歩いている道です。
+  </p>
+</section>
 
 <script>
-  function showTab(id) {
-    document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-    event.target.classList.add('active');
-  }
+const tabs = document.querySelectorAll(".tab");
+const sections = document.querySelectorAll("section");
+
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    tabs.forEach(t => t.classList.remove("active"));
+    sections.forEach(s => s.classList.remove("active"));
+
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.target).classList.add("active");
+  });
+});
 </script>
 
 </body>
