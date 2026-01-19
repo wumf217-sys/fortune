@@ -1,140 +1,170 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>8の書｜Balance in Motion</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-      background: #0f0f0f;
-      color: #f2f2f2;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      text-align: center;
-      padding: 24px 12px;
-      border-bottom: 1px solid #333;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 20px;
-      letter-spacing: 0.1em;
-    }
-    nav {
-      display: flex;
-      overflow-x: auto;
-      border-bottom: 1px solid #333;
-    }
-    nav button {
-      flex: 1;
-      padding: 12px;
-      background: none;
-      border: none;
-      color: #aaa;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    nav button.active {
-      color: #fff;
-      border-bottom: 2px solid #fff;
-    }
-    main {
-      padding: 32px 20px;
-      min-height: 50vh;
-    }
-    .tab {
-      display: none;
-      line-height: 1.9;
-      font-size: 15px;
-    }
-    .tab.active {
-      display: block;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 11px;
-      color: #666;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>8の書</title>
+<style>
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", sans-serif;
+    margin: 0;
+    background: #0f0f0f;
+    color: #f2f2f2;
+  }
+  header {
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+  }
+  header h1 {
+    margin: 0;
+    font-size: 20px;
+    letter-spacing: 0.1em;
+  }
+  nav {
+    display: flex;
+    overflow-x: auto;
+    border-bottom: 1px solid #333;
+    background: #111;
+  }
+  nav button {
+    flex: 0 0 auto;
+    padding: 12px 14px;
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  nav button.active {
+    color: #fff;
+    border-bottom: 2px solid #fff;
+  }
+  main {
+    padding: 20px;
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.9;
+  }
+  .backlinks {
+    margin-top: 32px;
+    font-size: 13px;
+    color: #aaa;
+  }
+  .backlinks span {
+    margin-right: 12px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+</style>
 </head>
+
 <body>
 
 <header>
   <h1>8の書</h1>
+  <div style="font-size:12px; color:#aaa;">ゆれながら、バランスをとる</div>
 </header>
 
-<nav>
-  <button class="active" onclick="openTab(0)">使命</button>
-  <button onclick="openTab(1)">状態</button>
-  <button onclick="openTab(2)">才能</button>
-  <button onclick="openTab(3)">これまで</button>
-  <button onclick="openTab(4)">今</button>
-  <button onclick="openTab(5)">これから</button>
-  <button onclick="openTab(6)">ヒント</button>
-  <button onclick="openTab(7)">結び</button>
-</nav>
+<nav id="tabs"></nav>
 
-<main>
-  <div class="tab active">
-    あなたは、<br>
-    揺れながらバランスを取り続けるために<br>
-    この流れの中にいる。
-  </div>
-
-  <div class="tab">
-    今、あなたの中心は<br>
-    定まろうとして揺れている。
-  </div>
-
-  <div class="tab">
-    あなたの才能は、<br>
-    止まることではなく、<br>
-    揺れながら整えること。
-  </div>
-
-  <div class="tab">
-    固めるために、<br>
-    遠回りしてきた。
-  </div>
-
-  <div class="tab">
-    揺れているが、<br>
-    外れてはいない。
-  </div>
-
-  <div class="tab">
-    動きながら、<br>
-    形になっていく。
-  </div>
-
-  <div class="tab">
-    安定しようとしなくていい。<br>
-    揺れ続けていることが、<br>
-    進んでいる証。
-  </div>
-
-  <div class="tab">
-    バランスは、<br>
-    止まった瞬間に崩れる。
-  </div>
-</main>
-
-<footer>
-  © 8 no Sho
-</footer>
+<main id="content"></main>
 
 <script>
-  function openTab(index) {
-    const tabs = document.querySelectorAll('.tab');
-    const buttons = document.querySelectorAll('nav button');
-    tabs.forEach((tab, i) => {
-      tab.classList.toggle('active', i === index);
-      buttons[i].classList.toggle('active', i === index);
-    });
-  }
+const tabs = [
+  { id: "intro", title: "はじめに", text: `
+これは診断ではありません。<br>
+あなたの中にある、8つの才能の関係を見るための書です。<br>
+どこから読んでも、また戻ってこられます。
+`},
+
+  { id: "mission", title: "使命・宿命", text: `
+あなたは今、偶然ではなく<br>
+「意味のある偶然の重なり」の中にいます。<br>
+この視点に触れていること自体が、その一部です。
+`},
+
+  { id: "flow", title: "運気の流れ", text: `
+これまで：無意識に使ってきた才能。<br>
+今：前に出ている才能。<br>
+これから：関係が変わっていく才能。
+`},
+
+  { id: "all", title: "8つの才能", text: `
+才能は使うものではありません。<br>
+関係し合うものです。<br>
+中心には、⑤〈ゆらぎ〉があります。
+`},
+
+  { id: "t1", title: "才能①", text: `
+今、前に出やすい性質。<br>
+ゆらぎによって、力みがほどけます。
+`},
+
+  { id: "t2", title: "才能②", text: `
+支えるための性質。<br>
+状況によって、表にも裏にも回ります。
+`},
+
+  { id: "t3", title: "才能③", text: `
+①②④をつなぐ転換点。<br>
+切り替わりは、静かに起きます。
+`},
+
+  { id: "t4", title: "才能④", text: `
+①②の反転。<br>
+止まることで、流れを見せます。
+`},
+
+  { id: "t5", title: "才能⑤〈ゆらぎ〉", text: `
+ゆらぎとは、崩れることではありません。<br>
+動き続けることで、戻り続ける力。<br>
+バランスを取るために、あえてゆれます。
+`},
+
+  { id: "t6", title: "才能⑥", text: `
+外と関係を結ぶ性質。<br>
+距離感が、質を変えます。
+`},
+
+  { id: "t7", title: "才能⑦", text: `
+内を深める性質。<br>
+沈むことで、全体を支えます。
+`},
+
+  { id: "t8", title: "才能⑧", text: `
+循環させる性質。<br>
+終わりを、始まりに戻します。
+`}
+];
+
+const nav = document.getElementById("tabs");
+const content = document.getElementById("content");
+
+function showTab(index) {
+  document.querySelectorAll("nav button").forEach((b,i)=>{
+    b.classList.toggle("active", i === index);
+  });
+  const t = tabs[index];
+  content.innerHTML = `
+    <div>${t.text}</div>
+    <div class="backlinks">
+      <span onclick="showTab(0)">はじめに</span>
+      <span onclick="showTab(2)">運気の流れ</span>
+      <span onclick="showTab(3)">8つの才能</span>
+      <span onclick="showTab(8)">⑤ ゆらぎ</span>
+    </div>
+  `;
+}
+
+tabs.forEach((t,i)=>{
+  const btn = document.createElement("button");
+  btn.textContent = t.title;
+  btn.onclick = ()=>showTab(i);
+  nav.appendChild(btn);
+});
+
+showTab(0);
 </script>
 
 </body>
