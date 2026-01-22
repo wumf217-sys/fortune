@@ -1,171 +1,117 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>8の書</title>
-<style>
-  body {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", sans-serif;
-    margin: 0;
-    background: #0f0f0f;
-    color: #f2f2f2;
-  }
-  header {
-    padding: 16px;
-    text-align: center;
-    border-bottom: 1px solid #333;
-  }
-  header h1 {
-    margin: 0;
-    font-size: 20px;
-    letter-spacing: 0.1em;
-  }
-  nav {
-    display: flex;
-    overflow-x: auto;
-    border-bottom: 1px solid #333;
-    background: #111;
-  }
-  nav button {
-    flex: 0 0 auto;
-    padding: 12px 14px;
-    background: none;
-    border: none;
-    color: #aaa;
-    cursor: pointer;
-    font-size: 14px;
-  }
-  nav button.active {
-    color: #fff;
-    border-bottom: 2px solid #fff;
-  }
-  main {
-    padding: 20px;
-    max-width: 720px;
-    margin: 0 auto;
-    line-height: 1.9;
-  }
-  .backlinks {
-    margin-top: 32px;
-    font-size: 13px;
-    color: #aaa;
-  }
-  .backlinks span {
-    margin-right: 12px;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>8の書</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: #0f0f12;
+      color: #e6e6eb;
+      line-height: 1.9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 500;
+      margin-bottom: 48px;
+    }
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin: 96px 0 24px;
+    }
+    p {
+      margin: 0 0 20px;
+    }
+    .lead {
+      opacity: 0.85;
+      margin-bottom: 80px;
+    }
+    .nav {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 16px;
+      background: rgba(20,20,28,0.8);
+      backdrop-filter: blur(8px);
+      padding: 12px 20px;
+      border-radius: 999px;
+    }
+    .nav a {
+      color: #b8b8c8;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+    .nav a:hover {
+      color: #ffffff;
+    }
+    .return {
+      margin-top: 120px;
+      text-align: center;
+      opacity: 0.7;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <p class="lead">これは、答えを決めるためのものではありません。</p>
 
-<header>
-  <h1>8の書</h1>
-  <div style="font-size:12px; color:#aaa;">ゆれながら、バランスをとる</div>
-</header>
+    <h2 id="s1">① 気づき</h2>
+    <p>何かが違う、と感じることがあります。理由ははっきりしないけれど、今までと同じやり方が、どこかしっくりこなくなる瞬間。</p>
+    <p>それは壊れたサインではなく、配置が変わり始めた合図かもしれません。ただ、その感覚があったことを覚えておくだけで、流れは静かに動き始めます。</p>
 
-<nav id="tabs"></nav>
+    <h2 id="s2">② 受け取る力</h2>
+    <p>分からない感覚を、すぐに処理しなくていい。受け取るとは、納得することではなく、なかったことにしないこと。</p>
+    <p>保留された感覚は、やがて別の場所でつながります。理解より先に、関係は始まっています。</p>
 
-<main id="content"></main>
+    <h2 id="s3">③ 転換点</h2>
+    <p>あるとき、景色の向きが少しだけ変わることがあります。決断ではなく、ずれ。</p>
+    <p>転換とは飛び越えることではなく、向きが変わること。そのずれが、次の見え方を連れてきます。</p>
 
-<script>
-const tabs = [
-  { id: "intro", title: "はじめに", text: `
-これは診断ではありません。<br>
-あなたの中にある、8つの才能の関係を見るための書です。<br>
-どこから読んでも、また戻ってこられます。
-`},
+    <h2 id="s4">④ 反転</h2>
+    <p>正しいと思っていたものが、別の角度から見え始める。否定ではなく、視点が増える。</p>
+    <p>反転は世界が壊れる瞬間ではありません。世界が、少し広がる瞬間です。</p>
 
-  { id: "mission", title: "使命・宿命", text: `
-あなたは今、偶然ではなく<br>
-「意味のある偶然の重なり」の中にいます。<br>
-この視点に触れていること自体が、その一部です。
-`},
+    <h2 id="s5">⑤ ゆらぎ</h2>
+    <p>中心は、必ずしも動かないものではありません。むしろ、揺れているからこそ、全体は巡ります。</p>
+    <p>止まらないこと自体が、最も自然なバランス。ここは支点ではなく、余白です。</p>
 
-  { id: "flow", title: "運気の流れ", text: `
-これまで：無意識に使ってきた才能。<br>
-今：前に出ている才能。<br>
-これから：関係が変わっていく才能。
-`},
+    <h2 id="s6">⑥ 固定しない力</h2>
+    <p>形に縛られないことは、弱さではありません。必要なときに使い、必要なくなったら離れる。</p>
+    <p>定義よりも、関係を信じる。固定しないことで、流れの中に居続けられます。</p>
 
-  { id: "all", title: "8つの才能", text: `
-才能は使うものではありません。<br>
-関係し合うものです。<br>
-中心には、⑤〈ゆらぎ〉があります。
-`},
+    <h2 id="s7">⑦ 距離を取る力</h2>
+    <p>近づきすぎないことで、全体が見える。距離は拒絶ではなく、尊重です。</p>
+    <p>適切な位置が、関係を長く続けさせます。</p>
 
-  { id: "t1", title: "才能①", text: `
-今、前に出やすい性質。<br>
-ゆらぎによって、力みがほどけます。
-`},
+    <h2 id="s8">⑧ 手放す力</h2>
+    <p>ここで何も持ち帰らなくていい。手放すことは、次の余白をつくること。</p>
+    <p>軽くなった分だけ、また巡り始めます。</p>
 
-  { id: "t2", title: "才能②", text: `
-支えるための性質。<br>
-状況によって、表にも裏にも回ります。
-`},
-
-  { id: "t3", title: "才能③", text: `
-①②④をつなぐ転換点。<br>
-切り替わりは、静かに起きます。
-`},
-
-  { id: "t4", title: "才能④", text: `
-①②の反転。<br>
-止まることで、流れを見せます。
-`},
-
-  { id: "t5", title: "才能⑤〈ゆらぎ〉", text: `
-ゆらぎとは、崩れることではありません。<br>
-動き続けることで、戻り続ける力。<br>
-バランスを取るために、あえてゆれます。
-`},
-
-  { id: "t6", title: "才能⑥", text: `
-外と関係を結ぶ性質。<br>
-距離感が、質を変えます。
-`},
-
-  { id: "t7", title: "才能⑦", text: `
-内を深める性質。<br>
-沈むことで、全体を支えます。
-`},
-
-  { id: "t8", title: "才能⑧", text: `
-循環させる性質。<br>
-終わりを、始まりに戻します。
-`}
-];
-
-const nav = document.getElementById("tabs");
-const content = document.getElementById("content");
-
-function showTab(index) {
-  document.querySelectorAll("nav button").forEach((b,i)=>{
-    b.classList.toggle("active", i === index);
-  });
-  const t = tabs[index];
-  content.innerHTML = `
-    <div>${t.text}</div>
-    <div class="backlinks">
-      <span onclick="showTab(0)">はじめに</span>
-      <span onclick="showTab(2)">運気の流れ</span>
-      <span onclick="showTab(3)">8つの才能</span>
-      <span onclick="showTab(8)">⑤ ゆらぎ</span>
+    <div class="return">
+      <p><a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="color:#b8b8c8;text-decoration:none;">最初に戻る</a></p>
     </div>
-  `;
-}
+  </div>
 
-tabs.forEach((t,i)=>{
-  const btn = document.createElement("button");
-  btn.textContent = t.title;
-  btn.onclick = ()=>showTab(i);
-  nav.appendChild(btn);
-});
-
-showTab(0);
-</script>
-
+  <div class="nav">
+    <a href="#s1">①</a>
+    <a href="#s2">②</a>
+    <a href="#s3">③</a>
+    <a href="#s4">④</a>
+    <a href="#s5">⑤</a>
+    <a href="#s6">⑥</a>
+    <a href="#s7">⑦</a>
+    <a href="#s8">⑧</a>
+  </div>
 </body>
 </html>
