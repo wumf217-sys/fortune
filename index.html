@@ -4,114 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>8の書</title>
+
   <style>
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-      background: #0f0f12;
-      color: #e6e6eb;
-      line-height: 1.9;
       margin: 0;
       padding: 0;
+      background: #ffffff;
+      color: #111111;
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+      line-height: 1.9;
     }
-    .container {
+
+    main {
       max-width: 720px;
       margin: 0 auto;
-      padding: 80px 24px 120px;
+      padding: 64px 24px 96px;
     }
+
     h1 {
-      font-size: 1.6rem;
-      font-weight: 500;
-      margin-bottom: 48px;
-    }
-    h2 {
-      font-size: 1.2rem;
-      font-weight: 500;
-      margin: 96px 0 24px;
-    }
-    p {
-      margin: 0 0 20px;
-    }
-    .lead {
-      opacity: 0.85;
-      margin-bottom: 80px;
-    }
-    .nav {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 16px;
-      background: rgba(20,20,28,0.8);
-      backdrop-filter: blur(8px);
-      padding: 12px 20px;
-      border-radius: 999px;
-    }
-    .nav a {
-      color: #b8b8c8;
-      text-decoration: none;
-      font-size: 0.85rem;
-    }
-    .nav a:hover {
-      color: #ffffff;
-    }
-    .return {
-      margin-top: 120px;
+      font-size: 1.4rem;
+      font-weight: normal;
+      letter-spacing: 0.15em;
       text-align: center;
-      opacity: 0.7;
+      margin-bottom: 64px;
+    }
+
+    p {
+      margin: 0 0 1.8em 0;
+    }
+
+    /* 余白としての最終行 */
+    .end-space {
+      margin-top: 4em;
     }
   </style>
 </head>
+
 <body>
-  <div class="container">
-    <p class="lead">これは、答えを決めるためのものではありません。</p>
+  <main>
+    <h1>8の書</h1>
 
-    <h2 id="s1">① 気づき</h2>
-    <p>何かが違う、と感じることがあります。理由ははっきりしないけれど、今までと同じやり方が、どこかしっくりこなくなる瞬間。</p>
-    <p>それは壊れたサインではなく、配置が変わり始めた合図かもしれません。ただ、その感覚があったことを覚えておくだけで、流れは静かに動き始めます。</p>
+    <!--
+      ここに「8の書」長文化・最終稿の本文を
+      段落ごとに <p>〜</p> でそのまま貼る
+    -->
 
-    <h2 id="s2">② 受け取る力</h2>
-    <p>分からない感覚を、すぐに処理しなくていい。受け取るとは、納得することではなく、なかったことにしないこと。</p>
-    <p>保留された感覚は、やがて別の場所でつながります。理解より先に、関係は始まっています。</p>
+    <!-- 例：
+    <p>最初の一文……</p>
+    <p>……</p>
+    <p>最後の一文……</p>
+    -->
 
-    <h2 id="s3">③ 転換点</h2>
-    <p>あるとき、景色の向きが少しだけ変わることがあります。決断ではなく、ずれ。</p>
-    <p>転換とは飛び越えることではなく、向きが変わること。そのずれが、次の見え方を連れてきます。</p>
-
-    <h2 id="s4">④ 反転</h2>
-    <p>正しいと思っていたものが、別の角度から見え始める。否定ではなく、視点が増える。</p>
-    <p>反転は世界が壊れる瞬間ではありません。世界が、少し広がる瞬間です。</p>
-
-    <h2 id="s5">⑤ ゆらぎ</h2>
-    <p>中心は、必ずしも動かないものではありません。むしろ、揺れているからこそ、全体は巡ります。</p>
-    <p>止まらないこと自体が、最も自然なバランス。ここは支点ではなく、余白です。</p>
-
-    <h2 id="s6">⑥ 固定しない力</h2>
-    <p>形に縛られないことは、弱さではありません。必要なときに使い、必要なくなったら離れる。</p>
-    <p>定義よりも、関係を信じる。固定しないことで、流れの中に居続けられます。</p>
-
-    <h2 id="s7">⑦ 距離を取る力</h2>
-    <p>近づきすぎないことで、全体が見える。距離は拒絶ではなく、尊重です。</p>
-    <p>適切な位置が、関係を長く続けさせます。</p>
-
-    <h2 id="s8">⑧ 手放す力</h2>
-    <p>ここで何も持ち帰らなくていい。手放すことは、次の余白をつくること。</p>
-    <p>軽くなった分だけ、また巡り始めます。</p>
-
-    <div class="return">
-      <p><a href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'})" style="color:#b8b8c8;text-decoration:none;">最初に戻る</a></p>
-    </div>
-  </div>
-
-  <div class="nav">
-    <a href="#s1">①</a>
-    <a href="#s2">②</a>
-    <a href="#s3">③</a>
-    <a href="#s4">④</a>
-    <a href="#s5">⑤</a>
-    <a href="#s6">⑥</a>
-    <a href="#s7">⑦</a>
-    <a href="#s8">⑧</a>
-  </div>
+    <div class="end-space"></div>
+  </main>
 </body>
 </html>
