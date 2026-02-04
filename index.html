@@ -1,61 +1,151 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>8の書</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8の書</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #ffffff;
-      color: #111111;
-      font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
-      line-height: 1.9;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  background: #ffffff;
+  color: #111;
+  line-height: 1.9;
+}
 
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 64px 24px 96px;
-    }
+header {
+  text-align: center;
+  padding: 48px 16px 24px;
+  font-size: 1.4rem;
+  letter-spacing: 0.15em;
+}
 
-    h1 {
-      font-size: 1.4rem;
-      font-weight: normal;
-      letter-spacing: 0.15em;
-      text-align: center;
-      margin-bottom: 64px;
-    }
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid #eee;
+}
 
-    p {
-      margin: 0 0 1.8em 0;
-    }
+.tab {
+  flex: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
 
-    /* 余白としての最終行 */
-    .end-space {
-      margin-top: 4em;
-    }
-  </style>
+.tab.active {
+  border-bottom: 2px solid #111;
+}
+
+.content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 20px 96px;
+  display: none;
+}
+
+.content.active {
+  display: block;
+}
+
+p {
+  margin-bottom: 1.8em;
+}
+</style>
 </head>
 
 <body>
-  <main>
-    <h1>8の書</h1>
 
-    <!--
-      ここに「8の書」長文化・最終稿の本文を
-      段落ごとに <p>〜</p> でそのまま貼る
-    -->
+<header>8の書</header>
 
-    <!-- 例：
-    <p>最初の一文……</p>
-    <p>……</p>
-    <p>最後の一文……</p>
-    -->
+<div class="tabs">
+  <div class="tab active" data-tab="c1">① 気づき</div>
+  <div class="tab" data-tab="c2">② 受け取る力</div>
+  <div class="tab" data-tab="c3">③ 転換点</div>
+  <div class="tab" data-tab="c4">④ 反転</div>
+  <div class="tab" data-tab="c5">⑤ ゆらぎ</div>
+  <div class="tab" data-tab="c6">⑥ 固定しない力</div>
+  <div class="tab" data-tab="c7">⑦ 距離を取る力</div>
+  <div class="tab" data-tab="c8">⑧ 手放す力</div>
+</div>
 
-    <div class="end-space"></div>
-  </main>
+<!-- ① -->
+<div id="c1" class="content active">
+<p>何かが違う、と感じることがあります。</p>
+<p>理由ははっきりしないけれど、今までと同じやり方が、どこかしっくりこなくなる瞬間。</p>
+<p>それは、大きな違和感である必要はありません。</p>
+<p>ほんの一瞬の引っかかりや、言葉にする前に消えてしまいそうな感覚。</p>
+<p>多くの場合、私たちはそれを見過ごします。</p>
+<p>でもその小さな違和感は、間違いではありません。</p>
+<p>それは、何かが壊れたサインではなく、配置が変わり始めた合図。</p>
+<p>ただ、「今までと同じではないかもしれない」と感じた自分が、そこに居たことだけを覚えておく。</p>
+<p>それだけで、流れはもう動き始めています。</p>
+</div>
+
+<!-- ② -->
+<div id="c2" class="content">
+<p>違和感に気づいたあと、私たちはすぐにそれを処理しようとします。</p>
+<p>でも、すぐに理解できるものだけが価値のある感覚とは限りません。</p>
+<p>受け取るとは、分からないままでいることを許すこと。</p>
+<p>急がずに置かれた違和感は、やがて形を変え、思いがけないところでつながります。</p>
+<p>受け取った時点で、もう十分に関係は始まっています。</p>
+</div>
+
+<!-- ③ -->
+<div id="c3" class="content">
+<p>受け取っていたものが、ある瞬間にふと、向きを変えることがあります。</p>
+<p>転換とは、飛び越えることではなく、ずれること。</p>
+<p>そのずれが、次の見え方を連れてきます。</p>
+</div>
+
+<!-- ④ -->
+<div id="c4" class="content">
+<p>反転とは、壊すことではありません。</p>
+<p>白と黒のあいだに、グラデーションが現れること。</p>
+<p>世界が、少しだけ広がる瞬間です。</p>
+</div>
+
+<!-- ⑤ -->
+<div id="c5" class="content">
+<p>中心は、必ずしも動かないものではありません。</p>
+<p>ゆらぎは、複数の感覚が同時に存在している状態。</p>
+<p>止まらないこと自体が、最も自然なバランス。</p>
+</div>
+
+<!-- ⑥ -->
+<div id="c6" class="content">
+<p>固定しない力は、弱さではありません。</p>
+<p>変化と、ちゃんと関係し続けるための力。</p>
+</div>
+
+<!-- ⑦ -->
+<div id="c7" class="content">
+<p>距離を取ることは、拒絶ではありません。</p>
+<p>全体を見失わないための位置を保つこと。</p>
+</div>
+
+<!-- ⑧ -->
+<div id="c8" class="content">
+<p>手放す力とは、余白を残す力。</p>
+<p>ここで、何も持ち帰らなくていい。</p>
+<p>ただ、少し軽くなっていれば、それでいい。</p>
+</div>
+
+<script>
+const tabs = document.querySelectorAll(".tab");
+const contents = document.querySelectorAll(".content");
+
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    tabs.forEach(t => t.classList.remove("active"));
+    contents.forEach(c => c.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
+</script>
+
 </body>
 </html>
